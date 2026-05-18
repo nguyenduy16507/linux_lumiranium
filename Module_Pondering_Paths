@@ -1,0 +1,9 @@
+# PONDERING PATHS 
+
+* Module này sẽ dạy bạn những kiến ​​thức cơ bản về đường dẫn tập tin trong Linux!
+Hệ thống tệp Linux là một "cây". Nghĩa là, nó có một thư mục gốc (được viết là /). Thư mục gốc của hệ thống tệp là một thư mục con, và mỗi thư mục con có thể chứa các thư mục con và tệp khác. Bạn tham chiếu đến các tệp và thư mục bằng đường dẫn của chúng . Một đường dẫn từ thư mục gốc của hệ thống tệp bắt đầu bằng /(tức là thư mục gốc của hệ thống tệp), và mô tả tập hợp các thư mục con cần phải đi xuống để tìm thấy tệp. Mỗi phần của đường dẫn được phân định bằng một ký tự khác /.
+
+Với kiến ​​thức đã nắm vững, hãy tiến lên và giải quyết những thử thách dưới đây.
+
+<details>
+ <summary>🎥<code> The File System
