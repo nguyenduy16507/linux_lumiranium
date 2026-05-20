@@ -120,7 +120,7 @@ hacker@dojo:~$ diff old new
 </details>
 
 <details>
-<commary><code>🏴listing files(liệt kê các tệp)</code></commary>
+<summary><code>🏴listing files(liệt kê các tệp)</code></summary>
   
 * Cho đến nay, chúng tôi đã hướng dẫn bạn cách tương tác với các tập tin. Nhưng các thư mục có thể chứa rất nhiều tập tin (và các thư mục khác) bên trong, và chúng tôi không phải lúc nào cũng có mặt để hướng dẫn bạn về tên của chúng. Bạn cần học cách liệt kê nội dung của chúng bằng lệnh **ls** !
 
@@ -143,5 +143,86 @@ hacker@dojo:~$
 </details>
 
 <details>
-  
+<summary><code>🏴touching files(Tạo tệp)</code></summary>
+ 
+* Tất nhiên, bạn cũng có thể tạo tệp! Có nhiều cách để làm điều này, nhưng ở đây chúng ta sẽ xem xét một lệnh đơn giản. Bạn có thể tạo một tệp mới, trống bằng cách sử dụng lệnh touch:
+```sh
+hacker@dojo:~$ cd /tmp
+hacker@dojo:/tmp$ ls
+hacker@dojo:/tmp$ touch pwnfile
+hacker@dojo:/tmp$ ls
+pwnfile
+hacker@dojo:/tmp$
+```
+ 
+* Đơn giản vậy thôi! Ở màn chơi này, hãy tạo hai tập tin: /tmp/pwnvà /tmp/college, rồi chạy/challenge/runđể nhận cờ!
+* <img width="699" height="131" alt="image" src="https://github.com/user-attachments/assets/c6ea0e33-d62b-423e-b2fa-e0e216dd6e4a" />
+
+</details>
+
+<details>
+ <summary><code>🏴removing files(Xóa tệp)</code></summary>
+ 
+* Các tập tin nằm rải rác khắp nơi. Giống như vỏ kẹo, cuối cùng sẽ có quá nhiều tập tin. Trong cấp độ này, chúng ta sẽ học cách dọn dẹp!
+
+* Trong Linux, bạn xóa tập tin bằng rmlệnh như sau:
+```sh
+hacker@dojo:~$ touch PWN
+hacker@dojo:~$ touch COLLEGE
+hacker@dojo:~$ ls
+COLLEGE     PWN
+hacker@dojo:~$ rm PWN
+hacker@dojo:~$ ls
+COLLEGE
+hacker@dojo:~$
+```
+* Hãy cùng luyện tập. Thử thách này sẽ tạo một delete_me ldtệp trong thư mục chính của bạn! Hãy xóa nó, sau đó chạy lệnh /challenge/check, lệnh này sẽ đảm bảo bạn đã xóa tệp và sẽ cung cấp cho bạn cờ!
+* <img width="711" height="210" alt="image" src="https://github.com/user-attachments/assets/3fc98bf5-0a3c-4dc9-85dc-5da01c830aed" />
+
+</details>
+
+<details>
+ <summary><code>🏴moving files(Di chuyển tệp)</code></summary>
+
+* Bạn cũng có thể di chuyển các tập tin bằng mvlệnh này. Cách sử dụng rất đơn giản:
+```sh
+hacker@dojo:~$ ls
+my-file
+hacker@dojo:~$ cat my-file
+PWN!
+hacker@dojo:~$ mv my-file your-file
+hacker@dojo:~$ ls
+your-file
+hacker@dojo:~$ cat your-file
+PWN!
+hacker@dojo:~$
+```
+* Thử thách này yêu cầu bạn di chuyển /flagtập tin vào /tmp/hack-the-planet(hãy làm đi)! Khi hoàn thành, hãy chạy lệnh /challenge/check, lệnh này sẽ kiểm tra mọi thứ và trả về cờ cho bạn.
+* <img width="816" height="204" alt="image" src="https://github.com/user-attachments/assets/7caacd36-b610-4e49-929c-f57c3622f2b3" />
+
+</details>
+
+<details>
+<summary><code>🏴copying files(Sao chép tệp)</code></summary>
+
+* Nhưng nếu bạn muốn giữ lại tệp gốc thì sao? Bạn có thể làm điều đó bằng cplệnh này. Cách sử dụng tương tự như với lệnh kia mv, nhưng nó sẽ giữ lại tệp nguồn.
+
+* Thử thách này yêu cầu bạn sao chép /flagtệp vào /tmp/hack-the-planet(hãy làm đi)! Khi hoàn thành, hãy chạy lệnh /challenge/check, lệnh này sẽ kiểm tra mọi thứ và trả về cờ cho bạn.
+* <img width="828" height="169" alt="image" src="https://github.com/user-attachments/assets/5a31ddf3-457b-455f-bdc1-ae11585cb24c" />
+
+</details>
+
+ <commarry><code>🏴hidden files(Tệp ẩn)</commarry>
+
+* Điều thú vị là, theo mặc định, lệnh lsnày không liệt kê tất cả các tập tin. Linux có một quy ước rằng các tập tin bắt đầu bằng dấu phẩy .sẽ không hiển thị theo mặc định trong lệnh này lsvà trong một vài ngữ cảnh khác. Để xem chúng bằng lệnh này ls, bạn cần gọi lệnh ls với -a cờ , như sau:
+```sh
+hacker@dojo:~$ touch pwn
+hacker@dojo:~$ touch .college
+hacker@dojo:~$ ls
+pwn
+hacker@dojo:~$ ls -a
+.college	pwn
+hacker@dojo:~$
+Giờ đến lượt bạn! Hãy đi tìm lá cờ, nó được giấu dưới dạng một tệp có tiền tố dấu chấm trong thư mục /.
+```  
 </details>
