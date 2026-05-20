@@ -212,9 +212,11 @@ hacker@dojo:~$
 
 </details>
 
- <commarry><code>🏴hidden files(Tệp ẩn)</commarry>
+<details>
+<summary><code>🏴hidden files(Tệp ẩn)</summary>
 
 * Điều thú vị là, theo mặc định, lệnh lsnày không liệt kê tất cả các tập tin. Linux có một quy ước rằng các tập tin bắt đầu bằng dấu phẩy .sẽ không hiển thị theo mặc định trong lệnh này lsvà trong một vài ngữ cảnh khác. Để xem chúng bằng lệnh này ls, bạn cần gọi lệnh ls với -a cờ , như sau:
+  
 ```sh
 hacker@dojo:~$ touch pwn
 hacker@dojo:~$ touch .college
@@ -223,6 +225,32 @@ pwn
 hacker@dojo:~$ ls -a
 .college	pwn
 hacker@dojo:~$
-Giờ đến lượt bạn! Hãy đi tìm lá cờ, nó được giấu dưới dạng một tệp có tiền tố dấu chấm trong thư mục /.
-```  
+```
+
+* Giờ đến lượt bạn! Hãy đi tìm lá cờ, nó được giấu dưới dạng một tệp có tiền tố dấu chấm trong thư mục /.
+
+* <img width="706" height="196" alt="image" src="https://github.com/user-attachments/assets/fab8e87a-e275-4ca9-9d74-b1b0a65d0eef" />
+
+</details>
+
+<details>
+ <summary><code>🏴An Epic Filesystem Quest(Cuộc phiêu lưu sử thi trong hệ thống tệp tin)</code></summary>
+
+* Với kiến ​​thức của bạn về cd, ls, và cat, chúng ta sẵn sàng chơi một trò chơi nhỏ!
+* Chúng ta sẽ bắt đầu bằng /. Thông thường:
+```sh
+hacker@dojo:~$ cd /
+hacker@dojo:/$ ls
+bin   challenge  etc   home  lib32  libx32  mnt  proc  run   srv  tmp  var
+boot  dev        flag  lib   lib64  media   opt  root  sbin  sys  usr
+```
+* Nhiều nội dung thật đấy! Rồi một ngày nào đó, bạn sẽ quen thuộc với chúng, nhưng ngay bây giờ, bạn có thể đã nhận ra flag catcác tệp và challengethư mục rồi.
+* Trong thử thách này, tôi đã giấu lá cờ ! Ở đây, bạn sẽ sử dụng lsvà catđể lần theo dấu vết của tôi và tìm ra nó! Đây là cách thực hiện:
+
+   0.Manh mối đầu tiên nằm ở đây /. Hãy đi đến đó.
+   1.Hãy tìm kiếm bằng lệnh `ls` .Sẽ có một thư mục tên là HINT hoặc CLUE hoặc một cái tên tương tự!
+   2.cat Hãy đọc gợi ý từ tập tin đó!
+   3.Tùy thuộc vào gợi ý, hãy chuyển sang thư mục tiếp theo (hoặc không!).
+   4.Hãy lần theo các manh mối để tìm thấy lá cờ!
+   Chúc may mắn!
 </details>
