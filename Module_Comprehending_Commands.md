@@ -253,4 +253,90 @@ boot  dev        flag  lib   lib64  media   opt  root  sbin  sys  usr
    3.Tùy thuộc vào gợi ý, hãy chuyển sang thư mục tiếp theo (hoặc không!).
    4.Hãy lần theo các manh mối để tìm thấy lá cờ!
    Chúc may mắn!
+  * <img width="873" height="920" alt="image" src="https://github.com/user-attachments/assets/dfbae53f-2454-42ac-ac82-82eee6088c76" />
+  * <img width="868" height="922" alt="image" src="https://github.com/user-attachments/assets/5ecd5953-9f06-4943-894c-f0c2e3cfc410" />
+  * <img width="887" height="922" alt="image" src="https://github.com/user-attachments/assets/b8f46aee-14d0-4149-a655-55a4f274991a" />
+  * <img width="882" height="237" alt="image" src="https://github.com/user-attachments/assets/99a3373b-c989-4d55-9b9f-add461019b0f" />
+
+
+</details>
+
+<details>
+ <summary><code>🏴making directories(tạo thư mục)</code></summary>
+
+* Chúng ta có thể tạo tập tin. Còn thư mục thì sao? Bạn tạo thư mục bằng lệnh . Sau đó ,mkdir bạn có thể đặt tập tin vào đó!
+
+Đồng hồ:
+```sh
+hacker@dojo:~$ cd /tmp
+hacker@dojo:/tmp$ ls
+hacker@dojo:/tmp$ ls
+hacker@dojo:/tmp$ mkdir my_directory
+hacker@dojo:/tmp$ ls
+my_directory
+hacker@dojo:/tmp$ cd my_directory
+hacker@dojo:/tmp/my_directory$ touch my_file
+hacker@dojo:/tmp/my_directory$ ls
+my_file
+hacker@dojo:/tmp/my_directory$ ls /tmp/my_directory/my_file
+/tmp/my_directory/my_file
+hacker@dojo:/tmp/my_directory$
+```
+* Bây giờ, hãy tạo một /tmp/pwnthư mục và tạo một collegetệp trong đó! Sau đó chạy lệnh này /challenge/run, lệnh này sẽ kiểm tra giải pháp của bạn và cung cấp cho bạn cờ!
+* <img width="685" height="369" alt="image" src="https://github.com/user-attachments/assets/079f6ad3-964d-455e-b5b1-252b9970a846" />
+
+</details>
+
+<details>
+<summary><code>🏴finding files(tìm kiếm tệp)</code></summary>
+ 
+* Vậy là chúng ta đã biết cách liệt kê, đọc và tạo tập tin. Nhưng làm thế nào để tìm chúng? Chúng ta sử dụng findlệnh!
+
+* Lệnh này findcó thể nhận các đối số tùy chọn mô tả tiêu chí tìm kiếm và vị trí tìm kiếm. Nếu bạn không chỉ định tiêu chí tìm kiếm, findnó sẽ khớp với mọi tệp. Nếu bạn không chỉ định vị trí tìm kiếm, findnó sẽ sử dụng thư mục làm việc hiện tại ( .). Ví dụ:
+```sh
+hacker@dojo:~$ mkdir my_directory
+hacker@dojo:~$ mkdir my_directory/my_subdirectory
+hacker@dojo:~$ touch my_directory/my_file
+hacker@dojo:~$ touch my_directory/my_subdirectory/my_subfile
+hacker@dojo:~$ find
+.
+./my_directory
+./my_directory/my_subdirectory
+./my_directory/my_subdirectory/my_subfile
+./my_directory/my_file
+hacker@dojo:~$
+```
+* Và khi chỉ định vị trí tìm kiếm:
+``` sh
+hacker@dojo:~$ find my_directory/my_subdirectory
+my_directory/my_subdirectory
+my_directory/my_subdirectory/my_subfile
+hacker@dojo:~$
+```
+* Và dĩ nhiên, chúng ta có thể chỉ định các tiêu chí! Ví dụ, ở đây, chúng ta lọc theo tên:
+```sh
+hacker@dojo:~$ find -name my_subfile
+./my_directory/my_subdirectory/my_subfile
+hacker@dojo:~$ find -name my_subdirectory
+./my_directory/my_subdirectory
+hacker@dojo:~$
+```
+* Bạn có thể tìm kiếm toàn bộ hệ thống tập tin nếu muốn!
+```sh
+hacker@dojo:~$ find / -name hacker
+/home/hacker
+hacker@dojo:~$
+```
+* Giờ đến lượt bạn. Tôi đã giấu lá cờ trong một thư mục ngẫu nhiên trên hệ thống tập tin. Nó vẫn có tên là flag. Hãy tìm nó đi!
+
+* Một vài lưu ý. Thứ nhất, có những tập tin khác cùng tên flagtrên hệ thống tập tin. Đừng hoảng sợ nếu tập tin đầu tiên bạn thử không chứa cờ cần tìm. Thứ hai, có rất nhiều vị trí trên hệ thống tập tin mà người dùng thông thường không thể truy cập. Những vị trí này sẽ gây findra lỗi, nhưng bạn có thể bỏ qua chúng; chúng tôi sẽ không giấu cờ ở đó! Cuối cùng, quá trình này findcó thể mất một lúc; hãy kiên nhẫn!
+* <img width="839" height="774" alt="image" src="https://github.com/user-attachments/assets/d7ead042-2070-4546-87dc-c35d07f21dc6" />
+* <img width="852" height="808" alt="image" src="https://github.com/user-attachments/assets/9a00fd0d-9420-4cff-8d76-4b56eec353cc" />
+
+</details>J
+
+<details>
+ <summary><code>🎥Symbolic Links(Liên kết tượng chưng)</code></summary>
+
+ 
 </details>
