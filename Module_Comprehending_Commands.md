@@ -333,10 +333,161 @@ hacker@dojo:~$
 * <img width="839" height="774" alt="image" src="https://github.com/user-attachments/assets/d7ead042-2070-4546-87dc-c35d07f21dc6" />
 * <img width="852" height="808" alt="image" src="https://github.com/user-attachments/assets/9a00fd0d-9420-4cff-8d76-4b56eec353cc" />
 
-</details>J
+</details>
 
 <details>
  <summary><code>🎥Symbolic Links(Liên kết tượng chưng)</code></summary>
 
- 
+ * **A deeper look at files(Phân tích sâu hơn về các tập tin)**
+
+    Có nhiều loại tệp khác nhau. Bạn có thể sử dụng lệnh `ls -ld /path/to/your/file` để kiểm tra.
+
+    ```sh
+    yans@asdf ~ $ ls -ld /home/yans/flags
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:30 /home/yans/flags
+    yans@asdf ~ $ ls -ld /home/yans/flags/TOPSECRET
+    -rw-r--r-- 1 yans users 18 Aug 19 06:30 /home/yans/flags/TOPSECRET
+    yans@asdf ~ $ █
+    ```
+
+    * Types:
+
+      * `-` là một tệp thông thường (regular file)
+      * `d` là một thư mục (các thư mục thực chất chỉ là các tệp đặc biệt)
+      * `l` là một liên kết tượng trưng (symbolic link - một tệp con trỏ một cách trong suốt đến một tệp hoặc thư mục khác.)
+      * `p` là một đường ống có tên (named pipe - còn được gọi là FIFO. Bạn sẽ trở nên rất quen thuộc với những thứ này trong module này!)
+      * `c` là một tệp thiết bị ký tự (character device file - tức là, được hỗ trợ/đại diện bởi một thiết bị phần cứng tạo ra hoặc nhận các luồng dữ liệu, chẳng hạn như micrô)
+      * `b` là một tệp thiết bị khối (block device file - tức là, được hỗ trợ/đại diện bởi một thiết bị phần cứng lưu trữ và tải các khối dữ liệu, chẳng hạn như ổ cứng)
+      * `s` là một unix socket (về cơ bản là một kết nối mạng cục bộ được đóng gói trong một tệp)
+
+  * **Symbolic (AKA soft) links?(Liên kết tượng trưng - hay còn gọi là liên kết mềm)**
+
+    Một liên kết tượng trưng/mềm (symbolic/soft link) là một loại tệp đặc biệt tham chiếu đến một tệp khác.
+
+    Chúng được tạo ra bằng lệnh `ln -s`, `-s` viết tắt của _symbolic_
+
+    ```sh
+    yans@asdf ~ $ ln -s flags/TOPSECRET link_to_the_flag
+    yans@asdf ~ $ ls -l
+    total 24
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Desktop
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Documents
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Downloads
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Pictures
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 code
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:30 flags
+    lrwxrwxrwx 1 yans users   15 Aug 19 07:29 link_to_the_flag -> flags/TOPSECRET
+    yans@asdf ~ $ cat ./link_to_the_flag
+    pwn_college{1337}
+    yans@asdf ~ $ █
+    ```
+
+    Bạn cũng có thể liên kết các thư mục:
+
+    ```sh
+    yans@asdf ~ $ ln -s flags link_to_flags_dir
+    yans@asdf ~ $ ls -ld link_to_flags_dir
+    lrwxrwxrwx 1 yans users 5 Aug 19 07:32 link_to_flags_dir -> flags
+    yans@asdf ~ $ cat link_to_flags_dir/TOPSECRET
+    pwn_college{1337}
+    yans@asdf ~ $ █
+    ```
+
+  * **Symbolic link gotchas(Những cạm bẫy trong liên kết tượng trưng)** 
+
+    Hãy cẩn thận (Beware): các liên kết tượng trưng trỏ đến các đường dẫn tương đối (relative paths) sẽ mang tính tương đối **so với thư mục chứa liên kết đó**!
+
+    ```sh
+    yans@asdf ~ $ ln -s flags/TOPSECRET link_to_the_flag
+    yans@asdf ~ $ ls -l link_to_the_flag
+    lrwxrwxrwx 1 yans users 15 Aug 19 07:45 link_to_the_flag -> flags/TOPSECRET
+    yans@asdf ~ $ cat link_to_the_flag
+    pwn_college{1337}
+    yans@asdf ~ $ mv link_to_the_flag /tmp
+    yans@asdf ~ $ ls -l /tmp
+    total 0
+    lrwxrwxrwx 1 yans users 15 Aug 19 07:45 link_to_the_flag -> flags/TOPSECRET
+    yans@asdf ~ $ cat /tmp/link_to_the_flag
+    cat: /tmp/link_to_the_flag: No such file or directory
+    yans@asdf ~ $ █
+    ```
+
+    So với đường dẫn tuyệt đối (absolute path):
+
+    ```sh
+    yans@asdf ~ $ ln -s /home/yans/flags/TOPSECRET link_to_the_flag
+    yans@asdf ~ $ ls -l link_to_the_flag
+    lrwxrwxrwx 1 yans users 26 Aug 19 07:49 link_to_the_flag -> /home/yans/flags/TOPSECRET
+    yans@asdf ~ $ cat link_to_the_flag
+    pwn_college{1337}
+    yans@asdf ~ $ mv link_to_the_flag /tmp
+    yans@asdf ~ $ ls -l /tmp/link_to_the_flag
+    lrwxrwxrwx 1 yans users 26 Aug 19 07:49 /tmp/link_to_the_flag -> /home/yans/flags/TOPSECRET
+    yans@asdf ~ $ cat /tmp/link_to_the_flag
+    pwn_college{1337}
+    yans@asdf ~ $ █
+    ```
+
+    
+  * **Hard Links?(Liên kết cứng)**
+
+    Sự tồn tại của các liên kết mềm (soft links) ngụ ý sự tồn tại của một liên kết cứng (hard link).
+
+    Các liên kết cứng (được tạo bằng lệnh ln mà không có đối số -s) tham chiếu trực tiếp đến tệp gốc bằng cách thực hiện phép thuật (magic) với những từ ngữ đáng sợ như "inode".
+
+    ```sh
+    yans@asdf ~ $ ln flags/TOPSECRET hard_link_to_flag
+    yans@asdf ~ $ ls -l
+    total 28
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Desktop
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Documents
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Downloads
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 Pictures
+    drwxr-xr-x 2 yans users 4096 Aug 19 06:27 code
+    drwxr-xr-x 2 yans users 4096 Aug 19 07:33 flags
+    -rw-r--r-- 2 yans users   18 Aug 19 06:30 hard_link_to_flag
+    yans@asdf ~ $ cat hard_link_to_flag
+    pwn_college{1337}
+    yans@asdf ~ $ █
+    ```
+
+    Một liên kết cứng là một tham chiếu "hợp lệ" (valid) đến tệp gốc ngang bằng với chính bản thân tệp gốc đó. Nó là một tệp tình cờ được hỗ trợ (backed by) bởi cùng một dữ liệu giống hệt như tệp gốc.
+
+</details>
+
+<details>
+ <summary><code>🏴linking files(Liên kết các tệp)</code></summary>
+
+* Nếu bạn sử dụng Linux (hoặc máy tính) trong một thời gian đủ dài để làm việc thực sự, cuối cùng bạn sẽ gặp phải một số biến thể của tình huống sau: bạn muốn hai chương trình truy cập cùng một dữ liệu, nhưng các chương trình đó lại mong đợi dữ liệu nằm ở hai vị trí khác nhau. May mắn thay, Linux cung cấp một giải pháp cho vấn đề này: các liên kết .
+
+* Các liên kết có hai loại: liên kết cứng và liên kết mềm (còn được gọi là liên kết tượng trưng ). Chúng ta sẽ phân biệt hai loại này bằng một ví dụ tương tự:
+
+* Liên kết cứng là khi bạn sử dụng nhiều địa chỉ khác nhau để chỉ căn hộ của mình, tất cả đều dẫn trực tiếp đến cùng một địa điểm (ví dụ: Apt 2so với Unit 2).
+* " Liên kết mềm" là khi bạn chuyển nhà và yêu cầu dịch vụ bưu chính tự động chuyển tiếp thư từ nơi ở cũ đến nơi ở mới.
+* Trong hệ thống tập tin, về mặt khái niệm, một tập tin là một địa chỉ chứa nội dung của tập tin đó. Liên kết cứng là một địa chỉ thay thế dùng để lập chỉ mục dữ liệu đó — việc truy cập vào liên kết cứng và truy cập vào tập tin gốc hoàn toàn giống nhau, ở chỗ chúng ngay lập tức cung cấp dữ liệu cần thiết. Ngược lại, liên kết mềm/liên kết tượng trưng chứa tên tập tin gốc. Khi bạn truy cập vào liên kết tượng trưng, ​​Linux sẽ nhận ra đó là một liên kết tượng trưng, ​​đọc tên tập tin gốc, và sau đó (thường) tự động truy cập vào tập tin đó. Trong hầu hết các trường hợp, cả hai tình huống đều dẫn đến việc truy cập dữ liệu gốc, nhưng cơ chế thì khác nhau.
+
+* Liên kết cứng nghe có vẻ đơn giản hơn với hầu hết mọi người (ví dụ điển hình, tôi đã giải thích nó chỉ trong một câu ở trên, so với hai câu cho liên kết mềm), nhưng chúng có nhiều nhược điểm và những vấn đề khó khăn khi triển khai, khiến cho liên kết mềm/liên kết tượng trưng trở thành lựa chọn thay thế phổ biến hơn nhiều.
+
+* Trong thử thách này, chúng ta sẽ tìm hiểu về liên kết tượng trưng (còn được gọi là symlink ). Liên kết tượng trưng được tạo bằng ln lệnh với -s đối số, như sau:
+```sh
+hacker@dojo:~$ cat /tmp/myfile
+This is my file!
+hacker@dojo:~$ ln -s /tmp/myfile /home/hacker/ourfile
+hacker@dojo:~$ cat ~/ourfile
+This is my file!
+hacker@dojo:~$
+```
+* Bạn có thể thấy rằng việc truy cập vào liên kết tượng trưng sẽ trả về nội dung của tệp gốc! Ngoài ra, bạn cũng có thể thấy cách sử dụng dấu chấm ( ln -s.). Lưu ý rằng đường dẫn tệp gốc đứng trước đường dẫn liên kết trong lệnh!
+
+* Có thể nhận dạng liên kết tượng trưng bằng một vài phương pháp. Ví dụ, filelệnh này, nhận tên tệp và cho biết loại tệp đó là gì, sẽ nhận ra các liên kết tượng trưng:
+```sh
+hacker@dojo:~$ file /tmp/myfile
+/tmp/myfile: ASCII text
+hacker@dojo:~$ file ~/ourfile
+/home/hacker/ourfile: symbolic link to /tmp/myfile
+hacker@dojo:~$
+```
+* Được rồi, giờ đến lượt bạn thử! Ở cấp độ này, lá cờ như thường lệ nằm ở /flag, nhưng /challenge/catflag thay vào đó sẽ hiển thị /home/hacker/not-the-flag. Hãy sử dụng liên kết tượng trưng và đánh lừa nó để lấy được lá cờ!
+* <img width="805" height="288" alt="image" src="https://github.com/user-attachments/assets/653084f8-2276-4d23-a943-04badef2d3d7" />
+
 </details>
