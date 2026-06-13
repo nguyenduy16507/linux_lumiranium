@@ -48,46 +48,84 @@ hi
 
 <details>
   <summmary><code>🏴Redirecting errors(lỗi chuyển hướng)</code></summmary>
+
+* Khi ta đã chuyển hướng xong thì mở instructions sẽ ra các hướng dẫn, thông báo còn mở myflag thì ra cờ.
+  * <img width="1186" height="523" alt="image" src="https://github.com/user-attachments/assets/ca4d7a94-eeb7-45f3-90bf-19654a3ea607" />
+  * <img width="841" height="121" alt="image" src="https://github.com/user-attachments/assets/cee9ad0f-0d61-4ee9-b15f-07e0ebebcc8c" />
+
+
 </details>
 
 <details>
   <summmary><code>🏴Redirevting input(Chuyển hướng đầu vào)</code></summmary>
+
+  * <img width="460" height="116" alt="image" src="https://github.com/user-attachments/assets/03de1f4d-ebe3-4b07-9a44-d19048fda90c" />
+
+
 </details>
 
 <details>
   <summmary><code>🏴Grepping stored results(Tìm kiếm kết quả lưu trữ)</code></summmary>
+
+  * <img width="430" height="28" alt="image" src="https://github.com/user-attachments/assets/7d6abea3-4f4a-463f-8f00-a9c3b34f206e" />
+
 </details>
 
 <details>
   <summmary><code>🏴Grepping live output(Tìm kiếm đầu ra trực tiếp)</code></summmary>
+
+  * <img width="723" height="273" alt="image" src="https://github.com/user-attachments/assets/65378a51-2b6f-4b70-a661-d27142a0749d" />
+
 </details>
 
 <details>
   <summmary><code>🏴Grepping errors(Lỗi Grepping)</code></summmary>
+
+  * <img width="721" height="288" alt="image" src="https://github.com/user-attachments/assets/afd224e6-e368-48de-99b4-4d7e938c7a69" />
+
 </details>
 
 <details>
   <summmary><code>🏴Filtering wiht grep -v(Lọc dữ liệu bằng lệnh `grep-v`)</code></summmary>
+
+  * <img width="416" height="31" alt="image" src="https://github.com/user-attachments/assets/5c00be5e-1901-4ab5-ba24-416c6020ca3d" />
+
 </details>
 
 <details>
   <summmary><code>🏴Filtering with sed(Lọc dữ liệu bằng lệnh sed)</code></summmary>
+
+  * <img width="635" height="232" alt="image" src="https://github.com/user-attachments/assets/4396637b-cd34-46cd-b4cf-14e016ed0e22" />
+
 </details>
 
 <details>
-  <summmary><code>🏴Duplicating piped data with tee(Sao chép dữ liệu được truyền qua đường ống bằng tee)</code></summmary>
+  <summmary><code>🏴Duplicating piped data with tee(Sao chép dữ liệu được truyền qua đường ống bằng tee) </code></summmary>
+
+  * <img width="572" height="112" alt="image" src="https://github.com/user-attachments/assets/bc4f5d2d-71f6-459c-8656-ff50e8b1bafb" />
+* <img width="673" height="79" alt="image" src="https://github.com/user-attachments/assets/82136bda-3dc9-4954-bc8b-73b44f2ff43f" />
+
 </details>
 
 <details>
   <summmary><code>🏴Process substitution for input(Thay thế quy trình cho đầu vào) </code></summmary>
+
+  * <img width="670" height="40" alt="image" src="https://github.com/user-attachments/assets/d83b61e8-f02d-4c0b-9196-fe3d5d31b1eb" />
+
 </details>
 
 <details>
   <summmary><code>🏴Writing to multiple programs(Viết cho nhiều chương trình)</code></summmary>
+
+  *<img width="602" height="52" alt="image" src="https://github.com/user-attachments/assets/88da43d5-1176-47e3-9666-3833a2441651" />
+
 </details>
 
 <details>
   <summmary><code>🏴Split-piping stderr and stdout<(Chia đường dẫn stderr và stdout)/code></summmary>
+
+    * <img width="607" height="53" alt="image" src="https://github.com/user-attachments/assets/22a2644b-022e-4338-8cc7-3028c6dc1172" />
+
 </details>
 
 <details>
