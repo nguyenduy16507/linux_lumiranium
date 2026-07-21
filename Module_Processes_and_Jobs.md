@@ -142,6 +142,42 @@ Chúc may mắn!
 </details>
 <details>
 <summary><code>🏴Backgroundung Processes(Các quy trình nên tảng)</code></summary>
+
+* Bạn đã tiếp tục các tiến trình ở chế độ nền trước bằng `fg`lệnh này. Bạn cũng có thể tiếp tục các tiến trình ở chế độ nền sau bằng `bg`lệnh này! Điều này sẽ cho phép tiến trình tiếp tục chạy, đồng thời trả lại cho bạn quyền truy cập vào shell để thực thi thêm các lệnh khác.
+
+* Cấp độ này `run`muốn thấy một bản sao khác của chính nó đang chạy, không bị tạm dừng , và sử dụng cùng một cửa sổ dòng lệnh. Làm thế nào? Sử dụng cửa sổ dòng lệnh để khởi chạy nó, sau đó tạm dừng nó, rồi chạy nó ở chế độ nền`bg` và khởi chạy một bản sao khác trong khi bản sao đầu tiên đang chạy ở chế độ nền!
+
+* BÍ MẬT: Nếu bạn muốn tìm hiểu chi tiết hơn, hãy xem cách phân biệt giữa các thuộc tính bị tạm dừng và thuộc tính nền! Hãy để tôi minh họa. Đầu tiên, chúng ta hãy tạm dừng một `sleep`:
+```sh
+hacker@dojo:~$ sleep 1337
+^Z
+[1]+  Stopped                 sleep 1337
+hacker@dojo:~$
+```
+* Quá `sleep`trình hiện đang tạm dừng ở chế độ nền. Chúng ta có thể thấy điều này bằng `ps`cách bật hiển `stat`thị cột với `-o`tùy chọn:
+
+hacker@dojo:~$ ps -o user,pid,stat,cmd
+USER         PID STAT CMD
+hacker       702 Ss   bash
+hacker       762 T    sleep 1337
+hacker       782 R+   ps -o user,pid,stat,cmd
+hacker@dojo:~$ 
+Bạn thấy đấy `T`? Điều đó có nghĩa là tiến trình bị tạm dừng do chúng ta `Ctrl-Z`. Dấu `S`trong cột `bash`của `STAT`có nghĩa là `bash`đang ngủ trong khi chờ nhập liệu. Dấu `R`trong `ps`cột của có nghĩa là nó đang hoạt động và có `+`nghĩa là nó đang ở chế độ nền trước!
+
+Hãy xem điều gì sẽ xảy ra khi chúng ta tiếp tục chạy `sleep`ngầm:
+```sh
+hacker@dojo:~$ bg
+[1]+ sleep 1337 &
+hacker@dojo:~$ ps -o user,pid,stat,cmd
+USER         PID STAT CMD
+hacker       702 Ss   bash
+hacker       762 S    sleep 1337
+hacker      1224 R+   ps -o user,pid,stat,cmd
+hacker@dojo:~$
+```
+Bùm! `sleep`Giờ nó đã có `S`. Nó đang ngủ trong khi, ừm, đang ngủ, nhưng nó không bị tạm dừng! Nó cũng đang chạy ngầm và do đó không có `+`.
+
+    
 </details>
 <details>
 <summary><code>🏴Foregrounding Processes(Các quy trình làm nổi bật)</code></summary>
