@@ -162,9 +162,9 @@ hacker       702 Ss   bash
 hacker       762 T    sleep 1337
 hacker       782 R+   ps -o user,pid,stat,cmd
 hacker@dojo:~$ 
-Bạn thấy đấy `T`? Điều đó có nghĩa là tiến trình bị tạm dừng do chúng ta `Ctrl-Z`. Dấu `S`trong cột `bash`của `STAT`có nghĩa là `bash`đang ngủ trong khi chờ nhập liệu. Dấu `R`trong `ps`cột của có nghĩa là nó đang hoạt động và có `+`nghĩa là nó đang ở chế độ nền trước!
+* Bạn thấy đấy `T`? Điều đó có nghĩa là tiến trình bị tạm dừng do chúng ta `Ctrl-Z`. Dấu `S`trong cột `bash`của `STAT`có nghĩa là `bash`đang ngủ trong khi chờ nhập liệu. Dấu `R`trong `ps`cột của có nghĩa là nó đang hoạt động và có `+`nghĩa là nó đang ở chế độ nền trước!
 
-Hãy xem điều gì sẽ xảy ra khi chúng ta tiếp tục chạy `sleep`ngầm:
+* Hãy xem điều gì sẽ xảy ra khi chúng ta tiếp tục chạy `sleep`ngầm:
 ```sh
 hacker@dojo:~$ bg
 [1]+ sleep 1337 &
@@ -175,16 +175,64 @@ hacker       762 S    sleep 1337
 hacker      1224 R+   ps -o user,pid,stat,cmd
 hacker@dojo:~$
 ```
-Bùm! `sleep`Giờ nó đã có `S`. Nó đang ngủ trong khi, ừm, đang ngủ, nhưng nó không bị tạm dừng! Nó cũng đang chạy ngầm và do đó không có `+`.
+* Bùm! `sleep`Giờ nó đã có `S`. Nó đang ngủ trong khi, ừm, đang ngủ, nhưng nó không bị tạm dừng! Nó cũng đang chạy ngầm và do đó không có `+`.
+* <img width="416" height="394" alt="image" src="https://github.com/user-attachments/assets/1fb39b74-5980-4b6f-955b-040e509f69ad" />
+ - Sau khi tạm dừng muốn chạy nó ở chế độ nền trước dùng `fg`,muốn chạy tiếp ở chế độ nền sau dùng `bg`
+ - khi đã chạy tiến trình ở chế độ nền sau(ẩn) ta muốn đưa nó lên nền trước(hiển thị) ta dùng lệnh `fg`,nếu có nhiều tiến trình cùng ẩn ta phải check bằng lệnh `jobs` để lấy `id` tiến trình cần tìm.
+ - Nếu như muốn chạy tiến trình ngầm ngay từ đầu mà ko phải thông qua dừng lại bằng `ctrl+z` sau đó `bg` thì ta có thể dùng cách chạy ngầm luôn ngay từ đầu bằng lệnh `...+&` . VD `/challenge/run &`
+
 
     
 </details>
 <details>
 <summary><code>🏴Foregrounding Processes(Các quy trình làm nổi bật)</code></summary>
+
+* Hãy tưởng tượng bạn có một tiến trình chạy ngầm và bạn muốn can thiệp vào nó nhiều hơn. Bạn sẽ làm gì?    Chà, bạn có thể đưa một tiến trình chạy ngầm lên phía trước `fg`giống như cách bạn đưa một tiến trình bị tạm dừng lên phía trước! Bài học này sẽ hướng dẫn bạn cách làm điều đó!
+* <img width="395" height="237" alt="image" src="https://github.com/user-attachments/assets/8bd43690-81e5-4480-915d-0ceaf40775a7" />
+ - Ở bài này ta biết được cách lệnh `fg`  hoạt động , bước đầu ta chạy `/challenge/run` sau đó tam dừng nó lại bằng `ctrl+z` ,tiếp ta dùng `bg` để chạy tiến trình này tiếp tục ở nền sau(ẩn),cuối cùng ta phát huy lệnh `fg` để đưa nó từ nền ẩn lên nền chính(nền trước) và hiển thị ở terminal.
+
 </details>
 <details>
 <summary><code>🏴Strating Backgrounded Processes(Khởi động các quy trình nền)</code></summary>
+
+ * Tất nhiên, bạn không cần phải tạm dừng các tiến trình để chạy chúng ở chế độ nền: bạn có thể khởi chạy chúng ở chế độ nền ngay từ đầu! Rất dễ dàng; tất cả những gì bạn cần làm là thêm `&`vào cuối lệnh, như sau:
+```sh
+hacker@dojo:~$ sleep 1337 &
+[1] 1771
+hacker@dojo:~$ ps -o user,pid,stat,cmd
+USER         PID STAT CMD
+hacker      1709 Ss   bash
+hacker      1771 S    sleep 1337
+hacker      1782 R+   ps -o user,pid,stat,cmd
+hacker@dojo:~$
+```
+* Chương trình `sleep`đang chạy ngầm, không bị tạm dừng. Giờ đến lượt bạn thực hành! Khởi chạy `/challenge/run`ở chế độ nền để lấy cờ
+* <img width="365" height="107" alt="image" src="https://github.com/user-attachments/assets/770d4329-87a2-426f-b745-c55f0892a5c7" />
+ - Ở thử thách này cho ta hiểu về việc có thẻ chạy luôn tiến triền nền sau(ẩn) ngay từ đầu bằng cách thêm dấu `&` vào sau câu lệnh.
+      
 </details>
 <details>
 <summary><code>🏴Processes Exit Codes(Mã thoát của quy trình)</code></summary>
+
+* Mọi lệnh shell, bao gồm mọi chương trình và mọi lệnh tích hợp sẵn, đều thoát ra với một mã thoát khi kết thúc quá trình chạy. Mã này có thể được shell hoặc người dùng shell (chính là bạn!) sử dụng để kiểm tra xem tiến trình có hoàn thành chức năng của nó hay không (tất nhiên, việc xác định này phụ thuộc vào mục đích ban đầu của tiến trình).
+
+* Bạn có thể truy cập mã thoát của lệnh vừa kết thúc gần đây nhất bằng cách sử dụng ?biến đặc biệt (đừng quên thêm tiền tố $để đọc giá trị của nó!):
+```sh
+hacker@dojo:~$ touch test-file
+hacker@dojo:~$ echo $?
+0
+hacker@dojo:~$ touch /test-file
+touch: cannot touch '/test-file': Permission denied
+hacker@dojo:~$ echo $?
+1
+hacker@dojo:~$
+```
+* Như bạn thấy, các lệnh thành công thường trả về giá trị `0`và các lệnh thất bại thường trả về giá trị khác 0, thường là `1`nhưng đôi khi là mã lỗi xác định chế độ lỗi cụ thể.
+
+* Trong thử thách này, bạn phải lấy mã thoát được trả về bởi hàm `/challenge/get-code`và sau đó chạy hàm `/challenge/submit-code`với mã lỗi đó làm đối số. Chúc may mắn!
+* <img width="304" height="86" alt="image" src="https://github.com/user-attachments/assets/6fde6e25-58b7-4f08-89a7-eb08c5401b89" />
+ - Ban đầu ta chạy lệnh `/challenge/get-code` sau đó sử dụng lệnh `echo $?` để in giá trị mà lệnh trên có, cuối cùng chayj lệnh `/challenge/submit-code 173` với đối số là giá trị in ra của lệnh `echo $?` .
+ - Ta có thể sử dụng 1 tổ hợp lệnh liên tục : `/challenge/get-code;/challenge/submit-code $?`
+    + Dấu `;` chính là để nối liền 2 lệnh liên tiếp
+    + Dấu `$?` là lấy giá trị in ra của lệnh trước là đối số cho lệnh sau 
 </details>
