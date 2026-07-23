@@ -158,4 +158,8 @@ hacker@dojo:~$
 
 * LƯU Ý: Sau cấp độ này, chúng ta sẽ kích hoạt Chế độ Đặc quyền! Trong không gian làm việc, hãy nhấp vào biểu tượng khóa đóng để bắt đầu lại thử thách ở Chế độ Đặc quyền và nhấp vào biểu tượng khóa mở để trở lại chế độ bình thường. Tên máy chủ của dấu nhắc lệnh sẽ kết thúc ~practicebằng khi Chế độ Đặc quyền được kích hoạt. Chế độ Đặc quyền cho phép bạn sudotruy cập đầy đủ để phân tích và gỡ lỗi, nhưng nó cung cấp một cờ giữ chỗ không thể gửi đi.
 * Lệnh sudo (Superuser Do): Cho phép người dùng thường thực thi một lệnh cụ thể dưới quyền root mà không cần biết mật khẩu của root (thường chỉ cần nhập mật khẩu của chính tài khoản cá nhân nếu được yêu cầu).
+* Ý nghĩa và chức năng chính:
+ - `Nâng quyền` : Thực thi 1 lệnh duy nhất cần quyền quản trị mà không cần đăng nhập hẳn vào tài khoản `root`
+ - Bảo mật : Theo dõi lịch sử thao tác của người dùng bằng cách ghi lại toàn bộ các lệnh đã sử dụng kèm theo `sudo` và nhật ký hệ thống.
+ - Ủy quyền(Sudoers):Cho phép người quản trị cấp quyền thực hiện một hoặc một vài lệnh cụ thể cho các user thường thông qua tệp cấu hình (thường là `/etc/sudoers`) mà không cần chia sẻ mật khẩu root - tránh bị lộ mật khẩu
 </details>
