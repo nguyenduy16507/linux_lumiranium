@@ -115,7 +115,7 @@ zardus:$6$bEFkpM0w/6J0n979$47ksu/JE5QK6hSeB7mmuvJyY05wVypMhMMnEPTIddNUb5R9KXgNTY
 * Nhưng nếu bạn không biết mật khẩu thì sao? Nếu bạn có giá trị băm của mật khẩu, bạn có thể bẻ khóa nó! Mặc dù /etc/shadowtheo mặc định, chỉ có thể đọc được bằng root, nhưng rò rỉ dữ liệu vẫn có thể xảy ra! Ví dụ, các bản sao lưu thường được lưu trữ mà không được mã hóa và bảo vệ không đầy đủ trên các máy chủ tệp, và điều này đã dẫn đến vô số vụ rò rỉ dữ liệu.
 
 Nếu tin tặc có được mật khẩu bị rò rỉ /etc/shadow, chúng có thể bắt đầu bẻ khóa mật khẩu và gây ra thiệt hại nghiêm trọng. Việc bẻ khóa có thể được thực hiện bởi John the Ripper , như sau:
-
+```sh
 hacker@dojo:~$ john ./my-leaked-shadow-file
 Loaded 1 password hash (crypt, generic crypt(3) [?/64])
 Will run 32 OpenMP threads
@@ -125,6 +125,7 @@ password1337      (zardus)
 Use the "--show" option to display all of the cracked passwords reliably
 Session completed
 hacker@dojo:~$
+```
 Tại đây, John the Ripper đã giải mã được mật khẩu bị rò rỉ của Zardus để tìm ra giá trị thực của nó password1337. Tội nghiệp Zardus!
 
 Màn chơi này mô phỏng câu chuyện đó, cung cấp cho bạn một thông tin rò rỉ /etc/shadow(trong /challenge/shadow-leak). Hãy giải mã nó (việc này có thể mất vài phút), suđể đến zardus, và chạy /challenge/runđến lấy lá cờ!
