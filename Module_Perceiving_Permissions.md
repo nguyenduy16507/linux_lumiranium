@@ -44,19 +44,19 @@ hacker@dojo:~$
        Ví dụ: "Sinh viên không được phép đọc file bài tập của sinh viên khác"
     - Cơ chế (Mechanism): Là công cụ hoặc phương thức kỹ thuật để thực thi chính sách đó
        Ví dụ: Quyền truy cập file (file permissions) trên máy tính hoặc ổ khóa trên cửa vật lý
-  3. Quản lý rủi ro và Niềm tin (Risk & Trust)
+  3. `Quản lý rủi ro và Niềm tin (Risk & Trust)`
     - Niềm tin (Trust): Hệ thống cần xác định ai được tin tưởng để thực hiện các nhiệm vụ cụ thể
     - Rủi ro (Risk): Xác suất xảy ra một sự cố xấu (như rò rỉ dữ liệu hoặc gian lận)
       + Nguyên tắc: Không thể loại bỏ hoàn toàn rủi ro, chỉ có thể quản lý và giảm thiểu nó
     - Biện pháp giảm thiểu:
       + Sử dụng Ủy quyền chính xác để hạn chế quyền hạn
       + Sử dụng Nhật ký và Kiểm toán (Logging & Audit logs) để ghi lại các hoạt động, giúp phát hiện và khắc phục khi có sự cố xảy ra
-  4. Ví dụ thực tế từ bài giảng
+  4. `Ví dụ thực tế từ bài giảng`
     - Môi trường đại học:
       + Hệ thống máy chủ dùng chung: Sinh viên có thể vô tình hoặc cố ý để lộ file bài tập nếu không thiết lập quyền đọc đúng cách
       + Liêm chính học thuật: Việc sao chép bài làm (dù có sự cho phép hay không) đều vi phạm chính sách của nhà trường
     - Hệ thống quản lý điểm: Nếu kiểm soát truy cập kém, sinh viên có thể tự thay đổi điểm số, làm mất đi giá trị của toàn bộ hệ thống
-  5. Tầm quan trọng của Kiểm soát truy cập
+  5. `Tầm quan trọng của Kiểm soát truy cập`
     - Ngăn chặn rò rỉ dữ liệu nhạy cảm trong các doanh nghiệp
     - Đảm bảo tính toàn vẹn và an ninh cho hệ thống máy tính
 * Nội dung bài giảng về 
