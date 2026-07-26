@@ -70,14 +70,20 @@ hacker@dojo:~$
      + `Cách thức`: Lưu trữ theo từng hàng của ma trận cùng với chủ thể (giống như mỗi người dùng giữ một           bộ"chìa khóa" hoặc "vé")
      + `Đặc điểm`: Không thể làm giả (unforgeable), thường sử dụng kỹ thuật mã hóa để bảo vệ
      + `Ưu điểm`: Phù hợp cho các chủ thể động, tồn tại ngắn hạn; dễ dàng thu hồi tất cả quyền của một              người dùng và trả lời câu hỏi "Người này có thể làm gì trên hệ thống?"
+       
   2.` Nguyên tắc Đặc quyền tối thiểu (Least Privilege)`:Hệ thống nên được thiết kế để một chủ thể chỉ có đúng những quyền cần thiết để hoàn thành công việc, giúp hạn chế rủi ro khi bị tấn công.
 * Nội dung bài giảng về **Kiểm soát Truy cập POSIX(POSIX Access Control)**:
   Đây là cách hệ thống Unix-like(như Linux) thực thi mô hình ACL một cách gọn nhẹ và hiệu quả bằng cách sử dụng các bit quyền hạn.
   - `Hệ thống 12 bit quyền hạn`: Để tiết kiệm không gian, POSIX mã hóa quyền truy cập vào 12 bit cho mỗi         file, chia làm 4 nhóm (mỗi nhóm 3 bit):
+    
       1.`Nhóm bit đặc biệt`: SetUID, SetGID và Sticky bit
+    
       2.`Quyền của Chủ sở hữu (Owner)`: Read (r), Write (w), Execute (x)
+    
       3.`Quyền của Nhóm (Group)`: r, w, x
+    
       4.`Quyền của Người dùng khác (Others/All)`: r, w, x
+    
   - `Cơ chế SetUID (Set User ID) - Cực kỳ quan trọng`:
      + `Ký hiệu`: Xuất hiện chữ s ở phần quyền thực thi của chủ sở hữu (ví dụ: -rwsr-xr-x)
      + `Hoạt động`: Khi chạy một chương trình có bit SetUID, tiến trình sẽ chạy với quyền của chủ sở hữu           file chứ không phải người dùng gọi lệnh
@@ -89,15 +95,122 @@ hacker@dojo:~$
 
   - `/etc/shadow`: Lưu mật khẩu đã mã hóa, chỉ root mới có quyền đọc
   - `ps`: Xem danh tính (UID) của các tiến trình đang chạy
+**Lưu ý**:Có thể kiểm tra xem 1 file có bộ bit `SetUID` hay không bằng lệnh `ls -la`
+
+VD: Thay vì thấy chữ x(execute) ở phần quyền của chủ sở hữu, bạn sẽ thấy chứ `s` - vd: `rwsr-xr-x`, chữ `s` này có nghĩa là file đó vừa có quyền thực thi, vừa được thiết lập cơ chế `SetUID`
 **Tóm lại**: Triển khai (Implementing) là khung lý thuyết về cách tổ chức quyền (ACL vs Capabilities), còn POSIX là một ví dụ cụ thể về cách dùng ACL 12-bit để vận hành một hệ điều hành thực tế.
 </details>
 <details>
   <summary><code>🏴Changing File Ownership(Thay đổi quyền sở hữu tệp)</code></summary>
 
-    
+* Điều đầu tiên và quan trọng nhất: quyền sở hữu tập tin. Mỗi tập tin trong Linux đều thuộc sở hữu của một người dùng trên hệ thống. Thông thường, trong cuộc sống hàng ngày, người dùng đó chính là người dùng mà bạn đăng nhập mỗi ngày.
+
+* Trên một hệ thống dùng chung (như trong phòng máy tính), có thể có nhiều người dùng với các tài khoản khác nhau, mỗi người đều có các tệp riêng trong thư mục cá nhân của mình. Nhưng ngay cả trên một hệ thống không dùng chung (như máy tính cá nhân của bạn), Linux vẫn có nhiều tài khoản người dùng "dịch vụ" cho các tác vụ khác nhau.
+
+* Hai tài khoản người dùng quan trọng nhất là:
+
+1. Tài khoản người dùng của bạn! Trên pwn.college, đây là tài `hacker`khoản người dùng, bất kể tên người dùng của bạn là gì.
+2. `root`Đây là tài khoản quản trị và trong hầu hết các tình huống bảo mật, đây là mục tiêu tối thượng. Nếu bạn chiếm được quyền kiểm soát `root`người dùng này, bạn gần như chắc chắn đã đạt được mục tiêu tấn công của mình!
+Vậy thì sao? Chà, hóa ra cách chúng tôi ngăn bạn làm điều đó `cat /flag` là bằng cách giao `/flag`quyền sở hữu cho rootngười dùng, cấu hình quyền truy cập sao cho không người dùng nào khác có thể đọc được (bạn sẽ học cách làm điều đó sau), và cấu hình thử thách thực tế để chạy với tư cách `root`người dùng đó (bạn cũng sẽ học cách làm điều này sau). Kết quả là khi bạn thực hiện `cat /flag`, bạn sẽ nhận được:
+```sh
+hacker@dojo:~$ ls -l /flag
+-r-------- 1 root root 53 Jul  4 04:47 /flag
+hacker@dojo:~$ cat /flag
+cat: /flag: Permission denied
+hacker@dojo:~$
+```
+* Ở đây, bạn có thể thấy rằng cờ này thuộc sở hữu của `root`người dùng (dòng đầu tiên `root`) và `root`nhóm ( `root`dòng thứ hai). Khi chúng ta cố gắng đọc nó với tư cách `hacker`người dùng, chúng ta bị từ chối. Tuy nhiên, nếu chúng ta là `root`(một giấc mơ của hacker!), chúng ta sẽ không gặp vấn đề gì khi đọc tệp này:
+```sh
+root@dojo:~# cat /flag
+pwn.college{demo_flag}
+root@dojo:~#
+```
+* Điều thú vị là chúng ta có thể thay đổi quyền sở hữu của các tập tin! Việc này được thực hiện thông qua lệnh chown( thay đổi chủ sở hữu ):
+```sh
+chown [username] [file]
+```
+* Thông thường, chownchỉ người dùng mới có thể gọi hàm này root. Giả sử chúng ta rootlại là (điều này không bao giờ lỗi thời!), và xem một ví dụ sử dụng điển hình của hàm chown:
+```SH
+root@dojo:~# mkdir pwn_directory
+root@dojo:~# touch college_file
+root@dojo:~# ls -l
+total 4
+-rw-r--r-- 1 root root    0 May 22 13:42 college_file
+drwxr-xr-x 2 root root 4096 May 22 13:42 pwn_directory
+root@dojo:~# chown hacker college_file
+root@dojo:~# ls -l
+total 4
+-rw-r--r-- 1 hacker root    0 May 22 13:42 college_file
+drwxr-xr-x 2 root   root 4096 May 22 13:42 pwn_directory
+root@dojo:~#
+```
+* `college_file`Quyền sở hữu đã được chuyển cho `hacker`người dùng, và giờ `hacker`người dùng có thể làm bất cứ điều gì `root`với nó trước đây! Nếu đây là `/flag`tập tin, điều đó có nghĩa là `hacker`người dùng có thể đọc được nó!
+
+* Ở cấp độ này, chúng ta sẽ thực hành thay đổi chủ sở hữu của `/flag`tập tin thành `hacker`người dùng, và sau đó đọc cờ. Chỉ riêng cho thử thách này, tôi đã thiết kế sao cho bạn có thể sử dụng lệnh `chown` thoải mái với tư cách `hacker`người dùng (thông thường, điều này yêu cầu bạn phải có quyền `root``sudo`). Hãy sử dụng quyền lực này một cách khôn ngoan và thoải mái sử dụng lệnh `chown`!
+**Chú ý**: Lệnh `chown` dùng để `thay đổi chủ sở hữu(User)` và `nhóm sở hữu(Group)` của file hoặc thư mục. Vì việc thay đổi chủ sở hữu ảnh hưởng khá nghiêm trọng đến bảo mật, lệnh này thường yêu cầu quyền quản trị cao nhất(`sudo`)
+   * `Cú pháp cơ bản` : `sudo chown [Tên_User]/:[Tên_Group] đường_dẫn/đến/file_hoặc_thư_mục`
+     - `[Tên_User]` nếu muốn đổi chủ sở hữu
+     - ` :[Tên_Group]` nếu muốn đổi nhóm sở hữu
+     - ` [Tên_User]:[Tên_Group]` nếu muốn đổi cả chủ sở hữu và nhóm sở hữu 
+   * Khi bạn có một thư mục chứa hàng trăm file/thư mục con bên trong và muốn đổi chủ sở hữu cho toàn bộ thì thêm tham số `-R`
+   * Dùng lệnh `ls -l` để kiểm tra kết quả sau khi chạy lệnh đổi 
 </details>
 <details>
   <summary><code>🏴Groups and Files(Nhóm và tệp)</code></summary>
+
+* Chia sẻ là thể hiện sự quan tâm, và chia sẻ là một phần không thể thiếu trong thiết kế của Linux. Các tập tin đều có người dùng sở hữu và nhóm sở hữu . Một nhóm có thể có nhiều người dùng, và một người dùng có thể là thành viên của nhiều nhóm.
+
+* Bạn có thể kiểm tra xem mình thuộc nhóm nào bằng `id`lệnh:
+```sh
+hacker@dojo:~$ id
+uid=1000(hacker) gid=1000(hacker) groups=1000(hacker)
+hacker@dojo:~$
+```
+* Ở đây, `hacker`người dùng chỉ thuộc `hacker`nhóm. Trường hợp sử dụng phổ biến nhất của nhóm là để kiểm soát quyền truy cập vào các tài nguyên hệ thống khác nhau. Ví dụ, "Chế độ đặc quyền" trong pwn.college cấp cho bạn quyền truy cập root để gỡ lỗi tốt hơn, v.v. Điều này được xử lý bằng cách cấp cho bạn một nhóm bổ sung khi bạn khởi chạy ở Chế độ đặc quyền:
+```sh
+hacker@dojo:~$ id
+uid=1000(hacker) gid=1000(hacker) groups=1000(hacker),27(sudo)
+hacker@dojo:~$
+```
+* Một người dùng chính điển hình của máy tính để bàn Linux thường có rất nhiều nhóm. Ví dụ, đây là màn hình nền của Zardus:
+```sh
+zardus@yourcomputer:~$ id
+uid=1000(zardus) gid=1000(zardus) groups=1000(zardus),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(users),106(netdev),114(bluetooth),117(lpadmin),120(scanner),995(docker)
+zardus@yourcomputer:~$
+```
+* Tất cả các nhóm này cho phép Zardus đọc đĩa CD và đĩa mềm (ai còn dùng đến chúng nữa?), quản trị hệ thống, phát nhạc, vẽ lên màn hình video, sử dụng Bluetooth, v.v. Thông thường, việc kiểm soát truy cập này được thực hiện thông qua quyền sở hữu nhóm trên hệ thống tập tin! Ví dụ, việc xuất đồ họa có thể được thực hiện thông qua `/dev/fb0`tập tin đặc biệt:
+```sh
+zardus@yourcomputer:~$ ls -l /dev/fb0
+crw-rw---- 1 root video 29, 0 Jun 30 23:42 /dev/fb0
+zardus@yourcomputer:~$
+```
+* Tệp này là một tệp thiết bị đặc biệt (loại ccó nghĩa là nó là "thiết bị ký tự"), và việc tương tác với nó sẽ dẫn đến những thay đổi trong đầu ra hiển thị (thay vì thay đổi dung lượng lưu trữ trên đĩa, như đối với một tệp thông thường!). Tài khoản người dùng của Zardus trên máy tính của anh ấy có thể tương tác với nó vì tệp này có quyền sở hữu nhóm là `video`, và Zardus là thành viên của `video`nhóm đó.
+
+Tuy nhiên, tập tin trong phòng tập võ lại không may mắn như vậy `/flag`! Hãy xem xét những điều sau:
+`
+hacker@dojo:~$ id
+uid=1000(hacker) gid=1000(hacker) groups=1000(hacker)
+hacker@dojo:~$ ls -l /flag
+-r--r----- 1 root root ... /flag
+hacker@dojo:~$ cat /flag
+cat: /flag: Permission denied
+hacker@dojo:~$
+Ở đây, tập tin cờ thuộc sở hữu của rootngười dùng và rootnhóm, và hackerngười dùng này không phải là người dùng cũng không phảiroot là thành viên của rootnhóm, vì vậy không thể truy cập tập tin. May mắn thay, quyền sở hữu nhóm có thể được thay đổi bằng lệnh chgrp( change group )! Trừ khi bạn là chủ sở hữu của tập tin và là thành viên trong nhóm mới, việc này thường yêu cầu quyền truy cập, vì vậy hãy kiểm tra bằng lệnh sau `:rootroot`
+```sh
+root@dojo:~# mkdir pwn_directory
+root@dojo:~# touch college_file
+root@dojo:~# ls -l
+total 4
+-rw-r--r-- 1 root root    0 May 22 13:42 college_file
+drwxr-xr-x 2 root root 4096 May 22 13:42 pwn_directory
+root@dojo:~# chgrp hacker college_file
+root@dojo:~# ls -l
+total 4
+-rw-r--r-- 1 root hacker    0 May 22 13:42 college_file
+drwxr-xr-x 2 root root   4096 May 22 13:42 pwn_directory
+root@dojo:~#
+```
+* Ở cấp độ này, tôi đã cho phép bất kỳ nhóm nào sở hữu cờ đều có thể đọc được, nhưng hiện tại nhóm đó là `root`. May mắn thay, tôi cũng đã cho phép bạn thực thi lệnh này `chgrp`với tư cách `hacker`người dùng! Hãy thay đổi quyền sở hữu nhóm của tệp cờ và đọc cờ!  
 </details>
 <details>
   <summary><code>🏴Fun With Groups Names(Trò chơi với tên nhóm)</code></summary>
