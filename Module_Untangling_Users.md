@@ -37,7 +37,7 @@ hacker:x:1000:1000::/home/hacker:/bin/bash
 * Trong mô-đun này, chúng ta sẽ khám phá các thủ đoạn khác nhau của người dùng, tìm hiểu các cách thức chuyển đổi người dùng sang quyền quản trị hệ thống và cùng nhau trải nghiệm những điều thú vị!
 
 <details>
-<summary><code>🏴Becoming root with su(Trở thành gốc rễ với `su`)</code><summary>
+<summary><code>🏴Becoming root with su(Trở thành gốc rễ với `su`)</code></summary>
 
 * Không chỉ tin tặc mới cần có quyền quản trị `root`. Thông thường, bạn, với tư cách là chủ sở hữu máy tính, cũng cần có `root`quyền quản trị để quản lý nó. Việc có quyền quản trị `root`là một hành động khá phổ biến mà người dùng Linux thực hiện, và có hai tiện ích dành cho mục đích này: `su`và `sudo`.
 
@@ -63,7 +63,7 @@ hacker@dojo:~$
  - Dấu nhác đổi lệnh từ `hacker@...:$`(Dấu $ thể hện người dùng thường) thành `root@...:#`(Dấu # thể hiện quyền root)
 </details>
 <details>
-<summary><code>🏴Other users with su(Những người dùng khác có `su`)</code><summary>
+<summary><code>🏴Other users with su(Những người dùng khác có `su`)</code></summary>
 
 * Nếu không có đối số nào, lệnh sunày sẽ khởi động một rootshell (sau khi xác thực bằng rootmật khẩu của người dùng kia). Tuy nhiên, bạn cũng có thể cung cấp tên người dùng làm đối số để chuyển sang người dùng đó thay vì người dùng mặc định root. Ví dụ:
 ```sh
@@ -76,7 +76,7 @@ some-user@dojo:~$
  - Nếu muốn chuyển sang người dùng nào đó thì ta lấy tên ng dùng đó làm đối số của `su`
 </details>
 <details>
-<summary><code>🏴Cracking passwords(Phá mật khẩu)</code><summary>
+<summary><code>🏴Cracking passwords(Phá mật khẩu)</code></summary>
 
 * Khi bạn nhập mật khẩu cho `su`, hệ thống sẽ so sánh mật khẩu đó với mật khẩu đã lưu trữ cho người dùng đó. Trước đây, các mật khẩu này được lưu trữ trong `/etc/passwd`, nhưng vì `/etc/passwd`là một tệp có thể đọc được trên toàn hệ thống, điều này không tốt cho mật khẩu, nên chúng đã được chuyển sang `/etc/shadow`. Đây là ví dụ `/etc/shadow`từ cấp độ trước:
 ```sh
@@ -126,12 +126,12 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed
 hacker@dojo:~$
 ```
-Tại đây, John the Ripper đã giải mã được mật khẩu bị rò rỉ của Zardus để tìm ra giá trị thực của nó password1337. Tội nghiệp Zardus!
+* Tại đây, John the Ripper đã giải mã được mật khẩu bị rò rỉ của Zardus để tìm ra giá trị thực của nó password1337. Tội nghiệp Zardus!
 
-Màn chơi này mô phỏng câu chuyện đó, cung cấp cho bạn một thông tin rò rỉ /etc/shadow(trong /challenge/shadow-leak). Hãy giải mã nó (việc này có thể mất vài phút), suđể đến zardus, và chạy /challenge/runđến lấy lá cờ!
+* Màn chơi này mô phỏng câu chuyện đó, cung cấp cho bạn một thông tin rò rỉ /etc/shadow(trong /challenge/shadow-leak). Hãy giải mã nó (việc này có thể mất vài phút), suđể đến zardus, và chạy /challenge/runđến lấy lá cờ!
 </details>
 <details>
-<summary><code>🏴Using sudo(Sử dụng sudo)</code><summary>
+<summary><code>🏴Using sudo(Sử dụng `sudo`)</code></summary>
 
 * Ngày xưa, một hệ thống Linux điển hình có rootmật khẩu mà quản trị viên sẽ sử dụng suđể đăng nhập root(sau khi đăng nhập vào tài khoản của họ bằng mật khẩu tài khoản thông thường). Nhưng rootmật khẩu rất khó bảo trì, chúng (hoặc mã băm của chúng!) có thể bị rò rỉ, và chúng không phù hợp với môi trường lớn hơn (ví dụ: nhiều máy chủ). Để giải quyết vấn đề này, trong những thập kỷ gần đây, thế giới đã chuyển từ quản trị thông qua lệnh ` sudo` susang quản trị thông qua lệnh `sudo` sudo( Thông tin thú vị : `sudo` sudoban đầu viết tắt của "su peruser do " , nhưng đã đổi thành su"do", và vì su`sudo` viết tắt của "substitute user", nên ý nghĩa hiện tại của `sudo` sudolà "substitute user, do").
 
