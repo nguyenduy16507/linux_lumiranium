@@ -337,10 +337,59 @@ hacker@dojo:~$
 </details>
 <details>
   <summary><code>🏴Permission Tweaking Practice(Thực hành điều chỉnh quyền)</code></summary>
+
+* Bạn nghĩ mình có thể làm được không chmod? Cùng luyện tập nào!
+
+* Thử thách này yêu cầu bạn thay đổi quyền truy cập của `/challenge/pwn` tập tin theo những cách cụ thể một vài lần liên tiếp. Nếu bạn thay đổi quyền truy cập sai, trò chơi sẽ thiết lập lại và bạn có thể thử lại. Nếu bạn thay đổi quyền truy cập đúng tám lần liên tiếp, thử thách sẽ cho phép bạn `chmod /flag` tự mình đọc được tập tin đó :-) Khởi chạy `/challenge/run` để bắt đầu!
+* chạy `/challenge/run` để bắt đầu sau đó dựa vào dữ kiệu của bài để viết tiếp.
+  - VD: Từ `rw-r--r--` -> `rwxr--rwx` Ta sẽ chạy câu lệnh :  `chmod u+x,o+wx /challenge/pwn`
 </details>
 <details>
   <summary><code>🏴Permissions Setting Practice(Thực hành thiết lập quyền)</code></summary>
+
+* Ngoài việc thêm và xóa quyền, như ở cấp độ trước, `chmod`bạn cũng có thể thiết lập toàn bộ quyền, ghi đè lên các quyền cũ. Điều này được thực hiện bằng cách sử dụng `=`thay vì `-`hoặc `+`. Ví dụ:
+```sh
+`u=rw`: Thiết lập quyền đọc và ghi cho người dùng, đồng thời xóa quyền thực thi.
+`o=x`: Chỉ thiết lập quyền thực thi cho tất cả người dùng, xóa quyền đọc và ghi.
+`a=rwx`: Thiết lập quyền đọc, ghi và thực thi cho người dùng, nhóm và toàn bộ cộng đồng!
+```
+* Nhưng nếu bạn muốn thay đổi quyền người dùng theo cách khác với quyền nhóm thì sao? Ví dụ, bạn muốn thiết lập quyền `rw`cho người dùng sở hữu, nhưng chỉ `r`cho nhóm sở hữu? Bạn có thể đạt được điều này bằng cách kết hợp nhiều chế độ `chmod`với `,`!
+```sh
+`chmod u=rw,g=r /challenge/pwn` Sẽ thiết lập quyền truy cập cho người dùng là đọc và ghi, và quyền truy cập cho nhóm là chỉ đọc.
+`chmod a=r,u=rw /challenge/pwn` Sẽ thiết lập quyền đọc cho toàn bộ `u`,`g`,`o `và cập nhận thêm cho `u` quyền ghi.
+```
+* Ngoài ra, bạn có thể xóa sạch quyền truy cập bằng lệnh -:
+```sh
+`chmod u=rw,g=r,o=- /challenge/pwn`Sẽ thiết lập quyền đọc và ghi cho `u`, quyền đọc cho `g`, xóa sạch mọi quyền của `o`
+```
+* Hãy nhớ rằng, dấu `-`phẩy xuất hiện sau đó `=`nằm trong ngữ cảnh khác so với khi nó xuất hiện ngay sau dấu phẩy `u`hoặc `g`( `o`trong trường hợp đó, nó sẽ khiến một số phần cụ thể bị loại bỏ, chứ không phải toàn bộ).
+
+* Cấp độ này mở rộng cấp độ trước bằng cách yêu cầu những thay đổi quyền hạn triệt để hơn, điều mà bạn sẽ cần `=`và cần `,`sử dụng chuỗi lệnh để đạt được. Chúc may mắn!
+* Lưu ý khi xóa 1 hay 2 quyền của đối tượng sở hữu ta dùng lệnh có chứa dấu `-` ở phía sau đối tượng đó, còn muốn xóa toàn bộ ta có thể dùng dấu `=-` ở sau đối tượng đó.
 </details>
 <details>
   <summary><code>🏴The `SUID Bit`(Quyền `SUID Bit`)</code></summary>
+
+* Như bạn đã tìm hiểu trong mô-đun trước, có nhiều trường hợp `root`người dùng không phải là người dùng thông thường cần quyền truy cập nâng cao để thực hiện một số tác vụ hệ thống nhất định. Quản trị viên hệ thống không thể có mặt để cung cấp mật khẩu mỗi khi người dùng muốn thực hiện một tác vụ mà chỉ `root`người dùng có quyền /sudo mới có thể làm được. Thay vào đó, bit quyền "Đặt ID người dùng" (SUID) cho phép người dùng chạy một chương trình với tư cách là chủ sở hữu của tệp chương trình đó.
+
+* Đây thực chất chính là cơ chế được sử dụng để cho phép các chương trình thử thách bạn chạy đọc cờ hoặc, bên ngoài pwn.college, để kích hoạt các công cụ quản trị hệ thống như `su`, `sudo`, v.v. Quyền truy cập của một tập tin có SUID trông như thế này:
+```sh
+hacker@dojo:~$ ls -l /usr/bin/sudo
+-rwsr-xr-x 1 root root 232416 Dec 1 11:45 /usr/bin/sudo
+hacker@dojo:~$
+```
+* Phần `s`thay thế cho bit thực thi có nghĩa là chương trình có thể thực thi bằng SUID . Điều này có nghĩa là, bất kể người dùng nào chạy chương trình (miễn là họ có quyền thực thi), chương trình sẽ được thực thi với tư cách người dùng sở hữu (trong trường hợp này là `root`người dùng ).
+
+* Với tư cách là chủ sở hữu của một tập tin, bạn có thể thiết lập bit SUID của tập tin đó bằng cách sử dụng lệnh chmod:
+```sh
+chmod u+s [program]
+```
+* Nhưng hãy cẩn thận! Việc cấp bit SUID cho một tệp thực thi thuộc sở hữu của người dùng `root`có thể tạo ra một lỗ hổng cho kẻ tấn công để chiếm quyền kiểm soát `root`. Bạn sẽ tìm hiểu thêm về điều này trong mô-đun Lạm dụng Chương trình .
+
+* Bây giờ, chúng ta sẽ cho phép bạn thêm bit SUID vào `/challenge/getroot`chương trình để tạo ra một `root`shell cho phép bạn `cat`tự thiết lập cờ!M
+* <img width="357" height="70" alt="image" src="https://github.com/user-attachments/assets/a0f71b36-cc03-4e35-884e-cc725b8a1cc9" />
+* Lưu ý :
+   - Cú pháp để bật SUID : Để gán bit SUID cho một file( với điều kiện bạn là chủ sở hữu file hoặc là        `root` ), ta dùng lệnh `chmod u+s <Tên File>`
+   - Khi bit được bật, chữ `x` ở phần `user` sẽ chuyển thành chữ `s` VD:`rwx`-> `rws`
+
 </details>
