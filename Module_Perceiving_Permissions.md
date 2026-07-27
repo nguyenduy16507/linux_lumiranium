@@ -214,12 +214,126 @@ root@dojo:~#
 </details>
 <details>
   <summary><code>🏴Fun With Groups Names(Trò chơi với tên nhóm)</code></summary>
+
+* Ở các cấp độ trước, bạn có thể nhận thấy rằng `hacker`người dùng của bạn là thành viên của `hacker`nhóm này, và người dùng kia `zardus`cũng là thành viên của `zardus`nhóm khác. Có một quy ước trong Linux rằng mỗi người dùng có nhóm riêng, nhưng điều này không nhất thiết phải đúng. Ví dụ, nhiều phòng máy tính sẽ đưa tất cả người dùng của họ vào một `user`nhóm chung duy nhất.
+
+* Vấn đề là, `hacker`trước đây bạn đã sử dụng lệnh đó cho nhóm, nhưng ở cấp độ này, cách đó sẽ không hiệu quả. Tôi vẫn cho phép bạn sử dụng lệnh đó `chgrp`, nhưng tôi đã chọn ngẫu nhiên tên nhóm mà người dùng của bạn thuộc về. Bạn sẽ cần sử dụng idlệnh để tìm ra tên nhóm đó, rồi chgrptiến đến chiến thắng!
+*<img width="296" height="79" alt="image" src="https://github.com/user-attachments/assets/b574ce67-db7c-408d-9327-e37433c86b56" />
+
+   - Đấu tiên ta chạy lệnh `ls -l /flag` để kiểm tra ta thấy chủ sở hữu và nhóm sở hữu có quyền đọc file `/flag` mà user `hacker` không phải là root nên ko có quyền mở file này. Nên ta phải chuyển đổi nhóm sở hữu của /flag sang nhóm ngẫu nhiên mà user `hacker` đang thuộc về thì lúc này user `hacker` đã trở thành thiền viên của nhóm sở hữu file đó. Từ đó user `hacker` có thể mở được file `/flag`
 </details>
 <details>
   <summary><code>🏴Changing Permissions(Thay đổi quyền truy cập)</code></summary>
+
+* Vậy là giờ chúng ta đã hiểu rõ về quyền sở hữu. Hãy cùng bàn về khía cạnh khác: quyền truy cập tệp. Nhớ lại ví dụ của chúng ta:
+```sh
+hacker@dojo:~$ mkdir pwn_directory
+hacker@dojo:~$ touch college_file
+hacker@dojo:~$ ls -l
+total 4
+-rw-r--r-- 1 hacker hacker    0 May 22 13:42 college_file
+drwxr-xr-x 2 hacker hacker 4096 May 22 13:42 pwn_directory
+hacker@dojo:~$
+```
+* Xin nhắc lại, ký tự đầu tiên là loại tệp. Chín ký tự tiếp theo là quyền truy cập thực tế của tệp hoặc thư mục, được chia thành 3 ký tự biểu thị quyền cho người dùng sở hữu (giờ thì bạn đã hiểu rồi!), 3 ký tự biểu thị quyền cho nhóm sở hữu (giờ bạn cũng đã hiểu rồi!), và 3 ký tự biểu thị quyền mà tất cả những người dùng và nhóm khác (ví dụ: người dùng khác) có đối với tệp.
+
+Mỗi ký tự trong ba ký tự đó đại diện cho quyền hạn thuộc một loại khác nhau:
+```sh
+r - user/group/other can read the file (or list the directory)-`Có thể đọc tệp`(hoặc liệt kê thư mục)
+w - user/group/other can modify the files (or create/delete files in the directory)-`Có thể chỉnh sửa` tệp(hoặc tạo/xóa thư mục)
+x - user/group/other can execute the file as a program (or can enter the directory, e.g., using `cd`)-`Có thể thực thi tệp tin` như 1 chương trình (hoặc có thể vào thư mục,vd: như lệnh`cd`)
+- - nothing
+```
+Như `college_file`rên, mục `rw-r--r--`quyền được giải mã thành:
+```sh
+`r`: Người dùng sở hữu tập tin (user hacker) có thể đọc tập tin đó.
+`w`: Người dùng sở hữu tập tin (user hacker) có thể ghi vào tập tin đó.
+`-`: Người dùng sở hữu tập tin (người dùng hacker) không thể thực thi nó.
+`r`: Người dùng trong nhóm sở hữu tệp (nhóm hacker) có thể đọc tệp đó.
+`-`: Người dùng trong nhóm sở hữu tệp (nhóm hacker) không thể ghi vào tệp đó.
+`-`: Người dùng trong nhóm sở hữu tệp (nhóm hacker) không thể thực thi tệp đó.
+`r`: Tất cả người dùng khác đều có thể đọc được.
+`-`: tất cả người dùng khác không thể ghi vào đó
+`-`: Những người dùng khác không thể thực thi lệnh này.
+```sh
+Bây giờ, hãy cùng xem các quyền mặc định của `/flag`:
+```sh
+hacker@dojo:~$ ls -l /flag
+-r-------- 1 root root 53 Jul  4 04:47 /flag
+hacker@dojo:~$
+```
+* Ở đây,chỉ có một bit được thiết lập: `r`quyền đọc cho người dùng sở hữu (trong trường hợp này là `root`). Các thành viên của nhóm sở hữu ( `root`nhóm ) và tất cả người dùng khác không có quyền truy cập vào tệp.
+
+Có thể bạn đang thắc mắc về cách thức `chgrp`hoạt động của các cấp độ quyền truy cập, nếu không có quyền truy cập nhóm vào tệp tin. Vâng, đối với các cấp độ đó, tôi đã thiết lập quyền truy cập theo cách khác:
+```sh
+hacker@dojo:~$ ls -l /flag
+-r--r----- 1 root root 53 Jul  4 04:47 /flag
+hacker@dojo:~$
+```
+* Nhóm đó có quyền truy cập! Đó là lý do tại sao `chgrp`việc sao chép tập tin cho phép bạn đọc được tập tin.
+
+* Tóm lại! Giống như quyền sở hữu, quyền truy cập tệp cũng có thể được thay đổi. Việc này được thực hiện bằng lệnh `chmod`( chmod ). Cách sử dụng cơ bản của chmod là:
+```sh
+chmod [OPTIONS] MODE FILE
+```
+* Bạn có thể chỉ định `MODE`theo hai cách: sửa đổi chế độ quyền hiện có hoặc tạo một chế độ hoàn toàn mới để ghi đè lên chế độ cũ.
+
+* Ở cấp độ này, chúng ta sẽ tìm hiểu về cách thứ nhất: sửa đổi một chế độ hiện có. `chmod`Cho phép bạn điều chỉnh quyền hạn với định dạng chế độ là `WHO+/- WHAT`, trong đó `WHO`là người dùng/nhóm/khác và `WHAT`là đọc/ghi/thực thi. Ví dụ, để thêm quyền đọc cho người dùng sở hữu , bạn sẽ chỉ định chế độ là `u+r`. `w`Quyền ghi và `x`thực thi cho gnhóm và `o`các chế độ khác (hoặc atất cả các chế độ) được chỉ định theo cùng một cách. Thêm ví dụ:
+```sh
+`u+r`Như đã nêu ở trên, thao tác này bổ sung quyền đọc cho quyền hạn của người dùng.
+`g+w`xThêm quyền ghi và thực thi vào quyền hạn của nhóm.
+`o-w` Loại bỏ quyền ghi cho người dùng khác.
+`a-rwx`Xóa bỏ tất cả quyền hạn cho người dùng, nhóm và toàn thế giới.
+```
+Vì thế:
+```sh
+root@dojo:~# mkdir pwn_directory
+root@dojo:~# touch college_file
+root@dojo:~# ls -l
+total 4
+-rw-r--r-- 1 root root    0 May 22 13:42 college_file
+drwxr-xr-x 2 root root 4096 May 22 13:42 pwn_directory
+root@dojo:~# chmod go-rwx *
+root@dojo:~# ls -l
+total 4
+-rw------- 1 hacker root    0 May 22 13:42 college_file
+drwx------ 2 root   root 4096 May 22 13:42 pwn_directory
+root@dojo:~#
+```
+* Trong thử thách này, bạn phải thay đổi quyền truy cập của `/flag`tập tin để có thể đọc được nó! Thông thường, bạn cần phải là chủ sở hữu của tập tin để thay đổi quyền truy cập, nhưng tôi đã làm cho `chmod`lệnh này trở nên vô cùng mạnh mẽ ở cấp độ này, và bạn có thể làm `chmod`bất cứ điều gì bạn muốn ngay cả khi bạn chỉ là `hacker`người dùng. Đây là một quyền lực tối thượng. `/flag`Tập tin thuộc sở hữu của `root`, và bạn không thể thay đổi điều đó, nhưng bạn có thể làm cho nó có thể đọc được. Hãy bắt tay vào giải quyết thử thách này!
+* Lệnh `chmod` được dùng để thiết lập hoặc thay đổi quyền truy cập của 1 tệp tin(file) hoặc thư mục(folder). Lệnh này giúp kiểm soát xem ai được phép đọc, sửa hay thực thi dữ liệu đó.
+* VD:- Với chủ sở hữu `chmod u+r` : thêm quyền đọc cho chủ sở hữu
+     - Với nhóm sở hữu `chmod g+r` : thêm quyền đọc cho nhóm sở hữu
+     - Với những ng dùng khác trong hệ thống `chmod o+r` : Thêm quyền đọc cho mọi ng dùng
+     - Với cả 3 nhóm trên `chmod a+r` : cấp quyền đọc cho tất cả mọi người
 </details>
 <details>
   <summary><code>🏴Executable Files(Tệp thực thi)</code></summary>
+
+ * Cho đến nay, bạn chủ yếu làm việc với quyền đọc . Điều này hợp lý, vì bạn đã cấp `/flag`quyền đọc cho tệp. Ở cấp độ này, chúng ta sẽ tìm hiểu về quyền thực thi.
+
+* Khi bạn gọi một chương trình, chẳng hạn như `/challenge/run`, Linux sẽ chỉ thực sự thực thi nó nếu bạn có quyền truy cập thực thi vào tệp chương trình đó. Hãy xem xét:
+```sh
+hacker@dojo:~$ ls -l /challenge/run
+-rwxr-xr-x 1 root root    0 May 22 13:42 /challenge/run
+hacker@dojo:~$ /challenge/run
+Successfully ran the challenge!
+hacker@dojo:~$
+```
+* Trong trường hợp này, `/challenge/run`chương trình chạy vì người dùng có quyền thực thi hacker. Vì tệp tin thuộc sở hữu của `root`người dùng và `root`nhóm, nên cần phải thiết lập quyền thực thi `other`. Nếu chúng ta xóa các quyền này, quá trình thực thi sẽ thất bại!
+```sh
+hacker@dojo:~$ chmod o-x /challenge/run
+hacker@dojo:~$ ls -l /challenge/run
+-rwxr-xr-- 1 root root    0 May 22 13:42 /challenge/run
+hacker@dojo:~$ /challenge/run
+bash: /challenge/run: Permission denied
+hacker@dojo:~$
+```
+* Trong thử thách này, `/challenge/run`chương trình sẽ cung cấp cho bạn lá cờ, nhưng trước tiên bạn phải làm cho nó có thể thực thi được! Hãy nhớ mật khẩu của bạn `chmod`và chương trình sẽ `/challenge/run`cho bạn biết lá cờ!
+* <img width="293" height="92" alt="image" src="https://github.com/user-attachments/assets/bb01a38b-96eb-4f14-ba3c-047a1107254c" />
+- Ở thử thách này ban đầu ta phải chạy lệnh `ls -l /challenge/run` để check xem các quyền hạn của ng dùng root sau đó ta sử dụng lệnh `chmod u+x` để cấp cho chủ sở hữu quyền thực thi chạy lệnh `/challenge/run` sau khi có quyền thực thi thì ta chạy lệnh này để lấy flag.
+* Lưu ý của bài này chủ sở hữu là của chính root nên ta thêm quyền thực thi cho `u` còn với những bài khác tùy vào bài mà ta lựa chọn sử dụng `u`,`g`,`o`,hay `a`.
+
 </details>
 <details>
   <summary><code>🏴Permission Tweaking Practice(Thực hành điều chỉnh quyền)</code></summary>
