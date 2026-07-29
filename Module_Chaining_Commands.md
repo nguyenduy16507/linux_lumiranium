@@ -3,7 +3,7 @@
 
 * Module này sẽ đề cập đến một vài cách, ngoài việc sử dụng đường ống (piping), để xích chuỗi các lệnh lại với nhau. Sau khi hoàn thành, bạn sẽ có thể tự viết các script shell !
 <details>
-<summary><code>🏴Chaining with Semicolons(Nối chuỗi bằng dấu `;`)</code><summary>
+<summary><code>🏴Chaining with Semicolons(Nối chuỗi bằng dấu `;`)</code></summary>
 
 *  Cách dễ nhất để nối các lệnh là sử dụng tổ hợp phím ` ;`. Trong hầu hết các trường hợp, ;tổ hợp phím này phân tách các lệnh tương tự như cách phím Enter phân tách các dòng. Vì vậy, ta có:
 ```sh
@@ -23,7 +23,7 @@ hacker@dojo:~$
 * Hãy thử ngay! Ở màn này, bạn phải chạy `/challenge/pwn`và sau đó `/challenge/college`, nối chúng lại bằng dấu chấm phẩy.
 </details>
 <details>
-<summary><code>🏴Building on Success(Xây dựng trên nền tảng thành công)</code><summary>
+<summary><code>🏴Building on Success(Xây dựng trên nền tảng thành công)</code></summary>
 
 *  Bạn đã học về mã thoát trong mô-đun Quy trình . Bây giờ, hãy sử dụng chúng để kết hợp các lệnh lại với nhau!
 
@@ -49,7 +49,7 @@ hacker@dojo:~$
 Trong thử thách này, bạn cần nối các chương trình `/challenge/first-success`lại với `/challenge/second`nhau bằng &&toán tử. Hãy thử chạy từng lệnh riêng lẻ trước để xem điều gì xảy ra (bạn sẽ không nhận được cờ). Nhưng nếu bạn nối chúng lại với nhau bằng toán tử `&&`, cờ sẽ xuất hiện!
 </details>
 <details>
-<summary><code>🏴Handing  Failure(Xử lý thất bại)</code><summary>
+<summary><code>🏴Handing  Failure(Xử lý thất bại)</code></summary>
 
 *  Bạn vừa tìm hiểu về `&&`toán tử `OR`, toán tử này chỉ thực thi lệnh thứ hai nếu lệnh đầu tiên thành công. Bây giờ, hãy cùng tìm hiểu về toán tử ngược lại: `||`toán tử `OR` cho phép bạn thực thi lệnh thứ hai chỉ khi lệnh đầu tiên thất bại (thoát với mã lỗi khác 0). Toán tử này được gọi là toán tử "OR" vì hoặc lệnh đầu tiên thành công HOẶC lệnh thứ hai sẽ được thực thi.
 
@@ -73,7 +73,7 @@ hacker@dojo:~$
 
 </details>
 <details>
-<summary><code>🏴Your First Shell Script(Tệp lệnh Sell đầu tiên của bạn)</code><summary>
+<summary><code>🏴Your First Shell Script(Tệp lệnh Sell đầu tiên của bạn)</code></summary>
 
 *  Khi bạn kết hợp ngày càng nhiều lệnh để đạt được các hiệu ứng phức tạp, độ dài của lời nhắc kết hợp sẽ nhanh chóng trở nên rất khó chịu. Khi điều này xảy ra, bạn có thể đặt các lệnh này vào một tệp, được gọi là tập lệnh shell , và chạy chúng bằng cách thực thi tệp đó! Ví dụ, hãy xem xét kỹ thuật dấu chấm phẩy của chúng ta:
 ```sh
@@ -106,7 +106,7 @@ hacker@dojo:~$
 
 </details>
 <details>
-<summary><code>🏴Redirecting Script Output(Chuyển hướng đầu ra của tập lệnh)</code><summary>
+<summary><code>🏴Redirecting Script Output(Chuyển hướng đầu ra của tập lệnh)</code></summary>
 
 * Hãy thử một cái gì đó phức tạp hơn một chút! Bạn đã chuyển hướng đầu ra giữa các chương trình bằng lệnh `pip` `|`, nhưng cho đến nay, điều này chỉ áp dụng giữa đầu ra của một lệnh và đầu vào của một lệnh khác. Nhưng nếu bạn muốn gửi đầu ra của nhiều chương trình đến một lệnh thì sao? Có một vài cách để làm điều này, và chúng ta sẽ khám phá một cách đơn giản ở đây: chuyển hướng đầu ra từ tập lệnh của bạn!
 
@@ -136,7 +136,7 @@ hacker@dojo:~$
    - `>&` : Gom luồng, chuyển lệnh từ luồng này sang luồng khác(VD: 2>&1)
 </details>
 <details>
-<summary><code>🏴Executable Shell Scripts(Các tập lệnh Shell có thể thực thi)</code><summary>
+<summary><code>🏴Executable Shell Scripts(Các tập lệnh Shell có thể thực thi)</code></summary>
 
  * Bạn đã viết xong tập lệnh shell đầu tiên của mình, nhưng việc gọi nó thông qua lại `bash script.sh`khá rắc rối. Tại sao bạn cần điều đó `bash`?
 
@@ -189,17 +189,82 @@ hacker@dojo:~$
      + `Shellscript` có thể được coi như là 1 lệnh như các lệnh khác trong linux .
 </details>
 <details>
-<summary><code>🏴Scripting with Arguments(Lập trình kịch bản với đối số)</code><summary>
+<summary><code>🏴Scripting with Arguments(Lập trình kịch bản với đối số)</code></summary>
+
+ * Bạn đã học cách tạo các tập lệnh shell, nhưng cho đến nay chúng chỉ là danh sách các lệnh. Các tập lệnh sẽ trở nên mạnh mẽ hơn nhiều khi chúng có thể chấp nhận các đối số! Điều này có thể trông như sau:
+```sh
+hacker@dojo:~$ bash myscript.sh hello world
+```
+* Tập lệnh có thể truy cập các đối số này bằng cách sử dụng các biến đặc biệt:
+ - $1chứa đối số đầu tiên ("hello")
+ - $2chứa đối số thứ hai ("thế giới")
+ - $3sẽ bao gồm lập luận thứ ba (nếu có).
+ -  ...và cứ thế tiếp tục
+* Đây là một ví dụ đơn giản:
+```sh
+hacker@dojo:~$ cat myscript.sh
+#!/bin/bash
+echo "First argument: $1"
+echo "Second argument: $2"
+hacker@dojo:~$ bash myscript.sh hello world
+First argument: hello
+Second argument: world
+hacker@dojo:~$
+```
+* Đối với thử thách này, bạn cần viết một kịch bản như `/home/hacker/solve.sh`sau:
+
+1.Cần hai đối số
+
+2.Xuất các giá trị theo thứ tự NGƯỢC (đối số thứ hai trước, sau đó là đối số thứ nhất).
+* Ví dụ:
+```sh
+hacker@dojo:~$ bash /home/hacker/solve.sh pwn college
+college pwn
+hacker@dojo:~$
+```
+* Sau khi kịch bản của bạn hoạt động chính xác, hãy chạy `/challenge/run`để lấy cờ!
+* <img width="401" height="98" alt="image" src="https://github.com/user-attachments/assets/cedf8051-b02a-4681-830f-7d48ace7e35c" />
+* `Lưu ý` : Thử thách này giúp ra hiểu cách `shell` truyền và nhận tham số , shell sẽ sử dụng dấu `cách` giữa các đối số để phân chia các đối số với các giá trị `$`, và khi thực thi shell sẽ dựa vào thứ tự các đối số để thực thi các lệnh trong file.
 </details>
 <details>
-<summary><code>🏴Scripting with Conditionals(Lập trình kịch bản với điều kiện)</code><summary>
+<summary><code>🏴Scripting with Conditionals(Lập trình kịch bản với điều kiện)</code></summary>
+
+* Giờ bạn đã có thể sử dụng các tham số trong kịch bản, hãy làm cho chúng thông minh hơn bằng logic điều kiện!
+
+* Trong bash, bạn có thể sử dụng `if`các câu lệnh để đưa ra quyết định:
+```sh
+if [ "$1" == "ping" ]
+then
+    echo "pong"
+fi
+```
+* Đoạn mã trên, bằng tiếng Anh, là `if the first argument is "ping", print out "pong"`. Cú pháp khá khắt khe vì một vài lý do. Thứ nhất, bạn phải có khoảng trắng sau `if`(nếu bạn quen với một ngôn ngữ như C, điều này sẽ khác), sau `[`, và trước `]`. Thứ hai, `if`, `then`, và `fi`phải nằm trên các dòng khác nhau (hoặc được phân cách bằng dấu chấm phẩy); bạn không thể gộp chúng vào cùng một câu lệnh. Nó cũng hơi kỳ lạ: thay vì `endif`hoặc `end`hoặc đại loại như vậy, ký tự kết thúc của `if`câu lệnh là `fi`( `if`viết ngược). Chỉ là điều bạn cần nhớ.
+
+* Đối với thử thách này, hãy viết một kịch bản như `/home/hacker/solve.sh`sau:
+
+Lấy một lập luận
+Nếu đối số là "pwn", hãy xuất ra "college".
+Với bất kỳ đầu vào nào khác, không xuất ra gì cả.
+Ví dụ:
+
+hacker@dojo:~$ bash /home/hacker/solve.sh pwn
+college
+hacker@dojo:~$ bash /home/hacker/solve.sh foo
+hacker@dojo:~$
+Sau khi kịch bản của bạn hoạt động chính xác, hãy chạy /challenge/runđể lấy cờ!
+
+LƯU Ý: Bạn muốn tìm hiểu thêm về những điều kiện khác mà một điều kiện có thể kiểm tra, ngoài việc so sánh chuỗi? Hãy đọc tất cả về điều đó với help test! 
+* <img width="403" height="57" alt="image" src="https://github.com/user-attachments/assets/53621b4c-0c89-4b45-a073-c6a026d663c1" />
+ - Đầu tiên ta chạy lệnh `nano /home/hacker/solve.sh` để tạo file và ghi vào file dạng văn bản,sau khi ghi xong ta dùng tổ hợp phím `ctrl+x` để thoát và chọn `y` để lưu , sau đó ấn `enter` để ghi đè lên file đó.
+* <img width="355" height="85" alt="image" src="https://github.com/user-attachments/assets/2e9a14f2-3644-4a34-bb37-0efe4d0756c4" />
+ - Sau khi cấp quyền thực thi cho file ta chạy lệnh `bash+file+đốiso` chạy file .
 </details>
 <details>
-<summary><code>🏴Scripting with Default Cases(Lập trình kịch bản với các trường hợp mặc định)</code><summary>
+<summary><code>🏴Scripting with Default Cases(Lập trình kịch bản với các trường hợp mặc định)</code></summary>
 </details>
 <details>
-<summary><code>🏴Scripting with Multiple Conditons(Lập trình kịch bản với nhiều điều kiện)</code><summary>
+<summary><code>🏴Scripting with Multiple Conditons(Lập trình kịch bản với nhiều điều kiện)</code></summary>
 </details>
 <details>
-<summary><code>🏴Reading Shell Scripts(Đọc các tệp lệnh `Shell`)</code><summary>
+<summary><code>🏴Reading Shell Scripts(Đọc các tệp lệnh `Shell`)</code></summary>
 </details>
