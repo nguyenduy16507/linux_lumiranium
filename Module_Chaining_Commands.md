@@ -128,12 +128,65 @@ hacker@dojo:~$
 
 * `Chú ý` : Dấu pipe `|` trong Shell/Bash dùng để lấy luồng đầu ra chuẩn(stdout) của lệnh nằm bên trái và chuyển trực tiếp thành luổng đầu vào chuẩn(stdin) cho lệnh nằm bên phải
 * `VD` : `lệnh 1 | lệnh 2` : Kết quả của lệnh 1 thay vì in ra màn hình sẽ được đẩy qua `đường oongs(pipe)`, lệnh 2 sẽ nhận dữ liệu từ đường ống đó để xử lý tiếp mà không cần bạn nhập từ bàn phím.
+   - `>` : Ghi đè vào cuối file
+   - `>>` : Nối thêm vào cuối file
+   - `2>` : Ghi đè lỗi vào file
+   - `2>>` : Nối thêm lỗi vào file
+   - `<` : Lấy dữ liệu đầi vào từ file
+   - `>&` : Gom luồng, chuyển lệnh từ luồng này sang luồng khác(VD: 2>&1)
 </details>
 <details>
 <summary><code>🏴Executable Shell Scripts(Các tập lệnh Shell có thể thực thi)</code><summary>
+
+ * Bạn đã viết xong tập lệnh shell đầu tiên của mình, nhưng việc gọi nó thông qua lại `bash script.sh`khá rắc rối. Tại sao bạn cần điều đó `bash`?
+
+* Khi bạn gọi lệnh này `bash script.sh`, tất nhiên bạn đang khởi chạy `bash`lệnh với `script.sh`đối số. Điều này cho `bash` biết rằng nó sẽ đọc các lệnh từ `script.sh`thay vì đầu vào chuẩn, và do đó tập lệnh shell của bạn sẽ được thực thi.
+
+* Hóa ra bạn có thể tránh việc phải tự tay gọi lệnh `bash`. Nếu tập lệnh shell của bạn có thể thực thi được (hãy nhớ lại `Quyền truy cập tập tin` ), bạn chỉ cần gọi nó thông qua đường dẫn tương đối hoặc tuyệt đối! Ví dụ, nếu bạn tạo tập `script.sh`lệnh trong thư mục chính của mình và cấp quyền thực thi cho nó , bạn có thể gọi nó thông qua `/home/hacker/script.sh`hoặc `~/script.sh`hoặc  `./script.sh` (nếu thư mục làm việc của bạn là `/home/hacker`).
+
+* Hãy thử cách này xem! Tạo một shellscript để gọi hàm đó `/challenge/solve`, cấp quyền thực thi cho nó, và chạy nó mà không cần gọi hàm một cách rõ ràng `bash`!
+* <img width="379" height="59" alt="image" src="https://github.com/user-attachments/assets/770dd04e-acd0-439c-ae8e-343a7513dbd1" />
+ - Thử thách này ta phải tạo 1 file shellscript sau đó ta sử dụng lệnh `chmod` để cấp quyền thực thi cho nó, sau đó chạy nó mà không cần gọi hàm `bash`, sử dụng lệnh `./script.sh`
+* Câu lệnh `home/hacker/script.sh hoặc ~/script.sh hoặc là ./script.sh (với thư mục là home/hacker)` được sử dụng để thực thi sau khi có/được cấp quyền thực thi để tránh sử dụng lệnh `bash`
+ -> Ý nghĩa cốt lõi của kiểu lệnh này là khi đã có quyền thực thi thì bạn chỉ cần gõ `./+file` là hệ thống sẽ tự nhìn vào dòng `Shebang` để biết phải dùng `Bash,Zsh,Python,perl hay Node.js` để chạy file đó.Bạn không cần quan tâm script này viết bằng ngôn ngữ gì, bạn chỉ cần chạy đúng tên file là nó tự chạy đúng môi trường.                
 </details>
 <details>
 <summary><code>🏴Understanding Shebangs(Hiểu về `Shebangs`)</code><summary>
+
+ * Bạn đang tiến rất gần đến cuộc sống mới của mình với tư cách là một lập trình viên shell! Tuy nhiên, cho đến nay, các shellscript của bạn chỉ có thể được chạy từ shell . Mọi thứ hoạt động rất tốt ở cấp độ trước (vì bạn đang gọi script của mình từ `bash`shell), nhưng chúng sẽ không hoạt động nếu script của bạn được gọi bởi, ví dụ, một chương trình được viết bằng Python (hoặc bất kỳ ngôn ngữ nào khác).
+
+Khi một chương trình được gọi trong Linux, nhân Linux trước tiên sẽ kiểm tra tệp để xác định cách thức chạy chương trình đó. Quá trình này KHÔNG sử dụng phần mở rộng (đó là lý do tại sao bạn không cần đặt tên cho các tập lệnh shell của mình với `.sh`phần mở rộng, hoặc các tập lệnh Python của mình với `.py`phần mở rộng, v.v.). Thay vào đó, Linux xem xét một vài byte đầu tiên của tệp để tìm thông tin này.
+
+Có rất nhiều loại chương trình khác nhau, nhưng nếu tệp chương trình bắt đầu bằng các ký tự `#!`(thường được gọi là " `shebang` "), Linux sẽ coi tệp đó là một chương trình được thông dịch , và nội dung của phần còn lại của dòng là đường dẫn đến trình thông dịch . Sau đó, nó sẽ gọi trình thông dịch với đường dẫn đến tệp chương trình làm đối số duy nhất.
+
+Hãy xem xét đoạn mã lệnh shell này:
+```sh
+#!/bin/bash
+
+echo "Hello Hackers!"
+```
+* Việc này có thể được thực hiện như sau:
+```sh
+hacker@dojo:~$ chmod a+x script.sh
+hacker@dojo:~$ ./script.sh
+Hello Hackers!
+hacker@dojo:~$
+```
+* Khi `./script.sh`được thực thi, Linux mở tệp, đọc dòng đầu tiên, trích xuất `/bin/bash`dưới dạng trình thông dịch và thực thi `/bin/bash ./script.sh`để chạy tập lệnh!
+
+* Lưu ý, dòng `shebang` phải là dòng ĐẦU TIÊN của tập tin - không được có dòng trống hoặc khoảng trắng trước đó!
+
+* Đối với thử thách này, hãy tạo một tập lệnh `/home/hacker/solve.sh`có dòng shebang hợp lệ và xuất ra "hack the planet". Nhớ cấp quyền thực thi cho tập lệnh, sau đó chạy `/challenge/run`để xác minh xem tập lệnh của bạn có hoạt động chính xác hay không!
+
+* THÔNG TIN THÚ VỊ: Những từ viết tắt phổ biến bạn có thể thấy:
+```sh
+`#!/bin/bash`cho các tập lệnh bash
+`#!/usr/bin/python3`cho các tập lệnh Python
+`#!/bin/sh`Đối với các tập lệnh shell POSIX --- đây là một phiên bản tiền thân thô sơ hơn `bash`với ít tính năng hơn, nhưng tương thích tốt hơn với các hệ thống không phải Linux!
+```
+* <img width="398" height="86" alt="image" src="https://github.com/user-attachments/assets/435d144f-e053-42fc-a8b3-091305cc6703" />
+ -Lưu ý : viết 1 file có chứa các dòng `shebang` ở ngay đầu tiên và cấp quyền thực thi cho nó ,sau đó ta có thể chạy các lệnh `./+Tên file` để chạy nó .
+     + `Shellscript` có thể được coi như là 1 lệnh như các lệnh khác trong linux .
 </details>
 <details>
 <summary><code>🏴Scripting with Arguments(Lập trình kịch bản với đối số)</code><summary>
