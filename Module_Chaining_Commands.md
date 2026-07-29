@@ -107,6 +107,27 @@ hacker@dojo:~$
 </details>
 <details>
 <summary><code>🏴Redirecting Script Output(Chuyển hướng đầu ra của tập lệnh)</code><summary>
+
+* Hãy thử một cái gì đó phức tạp hơn một chút! Bạn đã chuyển hướng đầu ra giữa các chương trình bằng lệnh `pip` `|`, nhưng cho đến nay, điều này chỉ áp dụng giữa đầu ra của một lệnh và đầu vào của một lệnh khác. Nhưng nếu bạn muốn gửi đầu ra của nhiều chương trình đến một lệnh thì sao? Có một vài cách để làm điều này, và chúng ta sẽ khám phá một cách đơn giản ở đây: chuyển hướng đầu ra từ tập lệnh của bạn!
+
+Đối với giao diện dòng lệnh, tập lệnh của bạn chỉ là một lệnh khác. Điều đó có nghĩa là bạn có thể chuyển hướng đầu vào và đầu ra của nó giống như bạn đã làm với các lệnh trong mô-đun `Piping` ! Ví dụ, bạn có thể ghi nó vào một tệp:
+```sh
+hacker@dojo:~$ cat script.sh
+echo PWN
+echo COLLEGE
+hacker@dojo:~$ bash script.sh > output
+hacker@dojo:~$ cat output
+PWN
+COLLEGE
+hacker@dojo:~$
+```
+* Tất cả các phương pháp chuyển hướng khác nhau đều hoạt động: `>`đối với stdout, `2>`stderr, `<`stdin, `>>`và `2>>`đối với chuyển hướng ở chế độ nối thêm, `>&`chuyển hướng đến các bộ mô tả tệp khác và |chuyển hướng đầu ra đến một lệnh khác.
+
+* Ở cấp độ này, chúng ta sẽ thực hành việc truyền dữ liệu (piping `|`) từ tập lệnh của bạn đến một chương trình khác. Vì các tập lệnh có thể thực thi sẽ được đề cập sau, hãy chạy tập lệnh của bạn với lệnh `bash`pipe khi bạn truyền đầu ra của nó. Giống như trước đây, bạn cần tạo một `.sh`tập lệnh gọi `/challenge/pwn`lệnh pipe, sau đó gọi `/challenge/college`lệnh pipe, và truyền đầu ra của tập lệnh pipe vào một lần gọi duy nhất của `/challenge/solve`lệnh pipe.
+* <img width="401" height="99" alt="image" src="https://github.com/user-attachments/assets/18e00ad3-cc86-43ae-9e89-ffdcb1738a6a" />
+
+* `Chú ý` : Dấu pipe `|` trong Shell/Bash dùng để lấy luồng đầu ra chuẩn(stdout) của lệnh nằm bên trái và chuyển trực tiếp thành luổng đầu vào chuẩn(stdin) cho lệnh nằm bên phải
+* `VD` : `lệnh 1 | lệnh 2` : Kết quả của lệnh 1 thay vì in ra màn hình sẽ được đẩy qua `đường oongs(pipe)`, lệnh 2 sẽ nhận dữ liệu từ đường ống đó để xử lý tiếp mà không cần bạn nhập từ bàn phím.
 </details>
 <details>
 <summary><code>🏴Executable Shell Scripts(Các tập lệnh Shell có thể thực thi)</code><summary>
