@@ -151,7 +151,7 @@ hacker@dojo:~$
  -> Ý nghĩa cốt lõi của kiểu lệnh này là khi đã có quyền thực thi thì bạn chỉ cần gõ `./+file` là hệ thống sẽ tự nhìn vào dòng `Shebang` để biết phải dùng `Bash,Zsh,Python,perl hay Node.js` để chạy file đó.Bạn không cần quan tâm script này viết bằng ngôn ngữ gì, bạn chỉ cần chạy đúng tên file là nó tự chạy đúng môi trường.                
 </details>
 <details>
-<summary><code>🏴Understanding Shebangs(Hiểu về `Shebangs`)</code><summary>
+<summary><code>🏴Understanding Shebangs(Hiểu về `Shebangs`)</code></summary>
 
  * Bạn đang tiến rất gần đến cuộc sống mới của mình với tư cách là một lập trình viên shell! Tuy nhiên, cho đến nay, các shellscript của bạn chỉ có thể được chạy từ shell . Mọi thứ hoạt động rất tốt ở cấp độ trước (vì bạn đang gọi script của mình từ `bash`shell), nhưng chúng sẽ không hoạt động nếu script của bạn được gọi bởi, ví dụ, một chương trình được viết bằng Python (hoặc bất kỳ ngôn ngữ nào khác).
 
@@ -260,11 +260,113 @@ LƯU Ý: Bạn muốn tìm hiểu thêm về những điều kiện khác mà m�
  - Sau khi cấp quyền thực thi cho file ta chạy lệnh `bash+file+đốiso` chạy file .
 </details>
 <details>
-<summary><code>🏴Scripting with Default Cases(Lập trình kịch bản với các trường hợp mặc định)</code></summary>
+<summary><code>🏴Scripting with Default Cases(Lập trình kịch bản với các trường hợp mặc định)</code>
+</summary>
+
+ * Những phát biểu của bạn `if`cho đến nay chỉ đề cập đến các trường hợp cụ thể, nhưng còn những trường hợp khác thì sao? Đó là lúc `else`chúng tôi phát huy tác dụng!
+
+* Mệnh đề này `else`được thực thi khi `if`điều kiện không đúng:
+```sh
+if [ "$1" == "hello" ]
+then
+    echo "Hi there!"
+else
+    echo "I don't understand"
+fi
+```
+* Lưu ý rằng mệnh đề này `else`không có điều kiện --- nó bắt tất cả những gì không khớp trước đó. Nó cũng không có `then`câu lệnh. Cuối cùng, mệnh đề này `fi`được đặt sau `else`khối lệnh để biểu thị sự kết thúc của toàn bộ câu lệnh phức tạp! Nó cũng là tùy chọn: bạn không có nó ở cấp độ trước đó, và bạn chỉ cần nó nếu logic bạn đang cố gắng thực hiện yêu cầu điều đó.
+
+* Dưới đây là một ví dụ thực tế:
+```sh
+if [ "$1" == "start" ]
+then
+    echo "Starting the service..."
+else
+    echo "Unknown command. Use 'start' to begin."
+fi
+```
+* Đối với thử thách này, hãy viết một kịch bản như `/home/hacker/solve.sh`sau:
+
+   1.Lấy một lập luận
+  
+   2.Nếu đối số là "pwn", hãy xuất ra "college".
+  
+   3.Với bất kỳ đầu vào nào khác, hãy xuất ra "nope".
+* Ví dụ:
+```sh
+hacker@dojo:~$ bash /home/hacker/solve.sh pwn
+college
+hacker@dojo:~$ bash /home/hacker/solve.sh hack
+nope
+hacker@dojo:~$ bash /home/hacker/solve.sh anything
+nope
+hacker@dojo:~$
+```
+* Sau khi kịch bản của bạn hoạt động chính xác, hãy chạy `/challenge/run`để lấy cờ!
+* <img width="262" height="80" alt="image" src="https://github.com/user-attachments/assets/f892412f-8d66-4581-a0c4-2914a91dc9da" />
+  - Viết vào file `/home/hacker/solve.sh` bằng lệnh `nano` 
+ 
+* <img width="359" height="107" alt="image" src="https://github.com/user-attachments/assets/e92ef16c-fb12-4fb5-b327-883a59445e71" />
+
 </details>
 <details>
 <summary><code>🏴Scripting with Multiple Conditons(Lập trình kịch bản với nhiều điều kiện)</code></summary>
+
+* Bạn đã học cách sử dụng một `if`câu lệnh duy nhất để kiểm tra một điều kiện. Nhưng nếu bạn cần kiểm tra nhiều điều kiện thì sao? Bạn có thể sử dụng `elif`(viết tắt của `else if`):
+```sh
+if [ "$1" == "one" ]
+then
+    echo "1"
+elif [ "$1" == "two" ]
+then
+    echo "2"
+elif [ "$1" == "three" ]
+then
+    echo "3"
+else
+    echo "unknown"
+fi
+```
+* Lưu ý rằng bạn cần có một `then`câu lệnh `else` sau `elif`, giống như `else` `if`. Như đã nói ở trên, `else`câu lệnh `else` ở cuối sẽ bắt tất cả những phần tử không khớp.
+
+Đối với thử thách này, hãy viết một kịch bản như `/home/hacker/solve.sh`sau:
+
+1.Lấy một lập luận
+
+2.Nếu đối số là "hack", hãy xuất ra "the planet"
+
+3.Nếu đối số là "pwn", hãy xuất ra "college".
+
+4.Nếu đối số là "learn", hãy xuất ra "linux".
+
+5.Với bất kỳ đầu vào nào khác, đầu ra sẽ là "không xác định".
+* Ví dụ:
+```sh
+hacker@dojo:~$ bash /home/hacker/solve.sh hack
+the planet
+hacker@dojo:~$ bash /home/hacker/solve.sh pwn
+college
+hacker@dojo:~$ bash /home/hacker/solve.sh learn
+linux
+hacker@dojo:~$ bash /home/hacker/solve.sh foo
+unknown
+hacker@dojo:~$
+```
+* Sau khi kịch bản của bạn hoạt động chính xác, hãy chạy `/challenge/run`để lấy cờ!
+
+LƯU Ý: Khi tạo kịch bản của mình, hãy đảm bảo tuân thủ chặt chẽ khoảng cách trong các ví dụ. Không giống như nhiều ngôn ngữ khác, bash yêu cầu dấu phẩy `[`và dấu cách `]`phải được phân tách với các ký tự khác, nếu không nó không thể phân tích điều kiện.
 </details>
 <details>
 <summary><code>🏴Reading Shell Scripts(Đọc các tệp lệnh `Shell`)</code></summary>
+
+* Bạn không phải là người duy nhất viết script shell! Chúng rất tiện dụng để thực hiện các tác vụ "cấp hệ thống" đơn giản và là công cụ phổ biến mà các nhà phát triển và quản trị viên hệ thống thường sử dụng. Trên thực tế, một phần đáng kể các chương trình trên một máy Linux điển hình là script shell.
+
+* Ở cấp độ này, chúng ta sẽ học cách đọc các tập lệnh shell. `/challenge/run`là một tập lệnh shell yêu cầu bạn nhập mật khẩu bí mật, nhưng mật khẩu đó được mã hóa cứng trong chính tập lệnh! Hãy đọc tập lệnh (sử dụng, ví dụ, `cat`), tìm ra mật khẩu và lấy cờ!
+
+* LƯU Ý: Bạn cũng có thể thử đọc mã nguồn của các bài toán khác! Đọc mã nguồn là một chiến lược quan trọng trong việc học các kỹ năng mới, vì bạn có thể thấy cách thức hoạt động của một số chức năng nhất định và tái sử dụng các chiến lược đó trong các kịch bản của riêng mình. Nhưng hãy cẩn thận: một số tệp chương trình là mã máy và con người sẽ không thể đọc được. Bạn có thể sử dụng lệnh `file`để phân biệt, nhưng hầu hết các bài toán trong Linux Luminarium đều được triển khai dưới dạng kịch bản shell và an toàn để `cat`đọc.
+* <img width="375" height="34" alt="image" src="https://github.com/user-attachments/assets/4a9f805f-e0a8-4e70-a83b-d1f676a1906d" />
+ - Sử dụng lệnh `echo` để in ra màn hình và pipe `|` để chuyển đầu ra của lệnh `echo` và đầu vào của lệnh `/challenge/run` khi đó  GUESS bên trong sẽ đọc và đối chiếu và xuất ra lá cờ nếu đúng .
+* <img width="284" height="54" alt="image" src="https://github.com/user-attachments/assets/3d18f72f-654a-4cae-9819-2f27aef2c0ff" />
+ - Ta cũng có thể làm bằng cách khác với việc truy cập vào /challenge bằng lệnh `cd`, sau đó thư mục hiện tại sẽ là `/challenge` và ta dùng lệnh `./run` có nghĩa là chạy file `run` ngay tại thư mục hiện tại rồi nhập theo yêu cầu và lấy flag.
+
 </details>
