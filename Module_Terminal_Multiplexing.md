@@ -65,13 +65,118 @@ GỢI Ý: Nếu bạn thấy [detached from...], nghĩa là bạn đã làm đú
 </details>
 <details> 
 <summary><code>🏴Finding Sessions(Tìm kiếm các buổi học)</code></summary>
+
+ * Đã đến lúc phải điều tra màn ảnh rồi!
+
+* Nếu bạn trở thành người nghiện sử dụng màn hình, chắc chắn bạn sẽ mở nhiều phiên làm việc cùng lúc. Làm thế nào để tìm được phiên làm việc phù hợp để tập trung lại?
+
+* Chúng ta có thể liệt kê chúng ra:
+```sh
+hacker@dojo:~$ screen -ls
+There are screens on:
+        23847.mysession   (Detached)
+        23851.goodwork    (Detached)
+        23855.morework    (Detached)
+3 Sockets in /run/screen/S-hacker.
+```
+* Các định danh của các phiên là PID của mỗi tiến trình màn hình tương ứng, dấu chấm và tên của phiên màn hình. Để kết nối với một phiên cụ thể, bạn sử dụng tên hoặc PID của nó bằng cách cung cấp nó làm đối số cho hàm `screen -r`.
+```sh
+hacker@dojo:~$ screen -r goodwork
+```
+* Trong thử thách này, chúng tôi đã tạo ra ba màn hình cho bạn. Một trong số đó chứa cờ. Hai màn hình còn lại là màn hình giả!
+
+* Bạn cần kiểm tra từng cái một cho đến khi tìm thấy. Đừng quên ngắt kết nối (Ctrl-A d) trước khi thử phiên tiếp theo! Được rồi, cho đến giờ, screennó chỉ là một dạng thiết bị đầu cuối kỳ lạ, lồng trong một thiết bị đầu cuối khác. Nhưng nó có thể còn hơn thế nữa!
+
+Trong cùng một màn hình, bạn có thể mở nhiều cửa sổ, giống như trình duyệt có nhiều tab. Điều này rất tiện lợi để sắp xếp các công việc khác nhau!
+
+Các cửa sổ này được điều khiển bằng các phím tắt khác nhau, tất cả đều bắt đầu bằng dấu hai chấm Ctrl-A(:).
+
+Ctrl-A c- Tạo cửa sổ mới
+Ctrl-A n- Cửa sổ tiếp theo
+Ctrl-A p- Cửa sổ trước
+Ctrl-A 0thông qua Ctrl-A 9- Chuyển thẳng đến cửa sổ 0-9
+Ctrl-A "- Hiển thị menu lựa chọn tất cả các cửa sổ
+Đối với thử thách này, chúng tôi đã thiết lập một phiên làm việc màn hình với hai cửa sổ:
+
+Cửa sổ 0 có... à, bạn phải chuyển sang đó để tìm hiểu!
+Cửa sổ 1 có thông báo chào mừng.
+Kết nối với phiên bằng screen -r, sau đó sử dụng một trong các tổ hợp phím ở trên để chuyển sang Cửa sổ 1. Đi lấy lá cờ đó đi!
 </details>
 <details> 
 <summary><code>🏴Switching Windows(Chuyển đổi `Windows`)</code></summary>
+
+ * Được rồi, cho đến giờ, `screen`nó chỉ là một dạng thiết bị đầu cuối kỳ lạ, lồng trong một thiết bị đầu cuối khác. Nhưng nó có thể còn hơn thế nữa!
+
+* Trong cùng một màn hình, bạn có thể mở nhiều cửa sổ, giống như trình duyệt có nhiều tab. Điều này rất tiện lợi để sắp xếp các công việc khác nhau!
+
+* Các cửa sổ này được điều khiển bằng các phím tắt khác nhau, tất cả đều bắt đầu bằng dấu hai chấm
+  `Ctrl-A`(:).
+
+- `Ctrl-A c` - Tạo cửa sổ mới
+- `Ctrl-A n` - Cửa sổ tiếp theo
+- `Ctrl-A p` - Cửa sổ trước
+- `Ctrl-A 0` thông qua `Ctrl-A 9`- Chuyển thẳng đến cửa sổ 0-9
+- `Ctrl-A "`- Hiển thị menu lựa chọn tất cả các cửa sổ
+* Đối với thử thách này, chúng tôi đã thiết lập một phiên làm việc màn hình với hai cửa sổ:
+
+ - Cửa sổ 0 có... à, bạn phải chuyển sang đó để tìm hiểu!
+ - Cửa sổ 1 có thông báo chào mừng.
+* Kết nối với phiên bằng `screen -r`, sau đó sử dụng một trong các tổ hợp phím ở trên để chuyển sang Cửa sổ
+  1. Đi lấy lá cờ đó đi!
+- Dùng `ctrl + A` sau đó ấn thứ thự các trang để đi đến trang mình muốn.
 </details>
 <details> 
 <summary><code>🏴Detaching and Attaching(tmux)[Tách và gắn (tmux)]</code></summary>
+
+ * Hãy thử làm điều tương tự với tmux!
+
+* `tmux`(Trình ghép kênh đầu cuối) là người anh em trẻ hơn, hiện đại hơn của screen. Nó thực hiện tất cả các chức năng tương tự nhưng với một số phím tắt khác nhau. Sự khác biệt lớn nhất? Thay vì `Ctrl-A`, tmux sử dụng `Ctrl-B`làm tiền tố lệnh.
+
+Để thoát khỏi tmux, bạn nhấn phím rồi nhấn `Ctrl-B`tiếp `d`.
+```sh
+hacker@dojo:~$ tmux
+[doing some work...]
+[Press Ctrl-B, then d]
+[detached (from session 0)]
+hacker@dojo:~$
+```
+* Các lệnh cũng khác nhau:
+
+ - `tmux ls`- Liệt kê các phiên
+ - `tmux attach`hoặc `tmux a`- Kết nối lại với phiên
+* Đối với thử thách này:
+
+ 1.Khởi chạy tmux
+ 
+ 2.Hãy tách rời khỏi nó.
+ 
+ 3.Chạy lệnh này `/challenge/run`(nó sẽ gửi cờ đến phiên làm việc tách rời của bạn!)
+ 
+ 4.Đính kèm lại để xem giải thưởng của bạn 
 </details>
 <details> 
 <summary><code>🏴Switching Windows(tmux)[Chuyển đổi Windows(tmux)]</code></summary>
+
+ * Hãy cùng học cách điều hướng các cửa sổ trong tmux!
+
+Giống như screen, tmux cũng có các cửa sổ. Tổ hợp phím khác nhau, nhưng khái niệm thì giống nhau:
+
+ - `Ctrl-B c`- Tạo cửa sổ mới
+ - `Ctrl-B n`- Cửa sổ tiếp theo
+ - `Ctrl-B p`- Cửa sổ trước
+ - `Ctrl-B 0`thông qua `Ctrl-B 9`- Chuyển đến cửa sổ 0-9
+ - `Ctrl-B w`- Xem một cửa sổ đẹp
+Tmux hiển thị các cửa sổ của bạn ở phía dưới trong thanh trạng thái, trông giống như sau:
+```sh
+[0] 0:bash* 1:bash
+```
+* Mục này `*`hiển thị cửa sổ hiện tại của bạn, và mỗi mục cũng hiển thị tiến trình mà cửa sổ đó được tạo ra để chạy.
+
+Chúng tôi đã tạo một phiên tmux với hai cửa sổ:
+
+  Cửa sổ 0 có cờ!
+  
+  Cửa sổ số 1 hân hạnh chào đón bạn. 
+  
+Đi lấy lá cờ đó đi! 
 </details>
